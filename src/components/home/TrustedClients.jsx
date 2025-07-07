@@ -26,7 +26,7 @@ export default function TrustedClients() {
   return (
     <section className="bg-gray-100 py-16 overflow-hidden">
       <div className="max-w-7xl mx-auto text-center">
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-700 mb-10">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-16">
           Thousands of Companies and Learners Trust Us
         </h2>
 

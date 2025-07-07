@@ -118,7 +118,7 @@ export default function PopularCourses() {
 
   return (
     <section className="py-16 bg-white relative">
-      <div className="max-w-7xl mx-auto px-4 text-center">
+      <div className="max-w-7xl mx-auto px-4">
         <h2 className="text-3xl font-bold text-gray-800 mb-10">
           Popular Courses
         </h2>
