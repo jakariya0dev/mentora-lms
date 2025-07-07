@@ -1,4 +1,4 @@
-import bannerImg from "../../../assets/images/banner.jpg";
+import bannerImg from "../../assets/images/banner.jpg";
 
 export default function Banner() {
   return (
@@ -47,7 +47,7 @@ export default function Banner() {
                 </div>
               </div>
               <div>
-                <p className="text-3xl font-bold">3000+</p>
+                <p className="text-4xl font-bold">3000+</p>
                 <p className="text-lg font-semibold">Happy Students</p>
               </div>
             </div>
