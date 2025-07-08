@@ -13,8 +13,8 @@ export default function Banner() {
     >
       <div className="bg-gradient-to-r from-black/90 via-black/50 to-transparent h-full w-full p-5 md:p-10">
         <div className="max-w-7xl mx-auto text-white flex items-center h-full">
-          <div className="max-w-lg">
-            <h1 className="mb-5 text-5xl leading-tight font-bold">
+          <div className="max-w-2xl">
+            <h1 className="mb-5 text-6xl leading-tight font-bold">
               Learn Any Skill to Advance Your <span className="underline decoration-amber-400 underline-offset-10 decoration-8">Career</span>
             </h1>
             <p className="md:mb-8 mb-5 text-xl">
