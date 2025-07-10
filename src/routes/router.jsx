@@ -1,10 +1,12 @@
 import { createBrowserRouter } from "react-router";
 import App from "../App";
+import AllCourses from "../components/dashboard/AllCourses";
 import AllUsers from "../components/dashboard/AllUsers";
-import MyCourses from "../components/dashboard/MyCourses";
 import PendingTeachers from "../components/dashboard/PendingTeachers";
 import UserProfile from "../components/dashboard/UserProfile";
+import AddCourse from "../pages/AddCourse";
 import BeTeacher from "../pages/BeTeacher";
+import Courses from "../pages/Courses";
 import DashBoard from "../pages/Dashboard";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
@@ -33,8 +35,8 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            path: "my-courses",
-            element: <MyCourses />,
+            path: "courses",
+            element: <Courses />,
           },
           {
             path: "profile",
@@ -47,6 +49,14 @@ const router = createBrowserRouter([
           {
             path: "all-users",
             element: <AllUsers />,
+          },
+          {
+            path: "all-courses",
+            element: <AllCourses />,
+          },
+          {
+            path: "add-course",
+            element: <AddCourse />,
           },
         ],
       },

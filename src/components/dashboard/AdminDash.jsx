@@ -24,7 +24,7 @@ export default function AdminDash() {
             All Users
           </NavLink>
           <NavLink
-            to="/dashboard/profile"
+            to="/dashboard/all-courses"
             className={({ isActive }) =>
               isActive ? "text-yellow-300" : "hover:text-yellow-200"
             }

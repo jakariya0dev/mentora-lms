@@ -99,8 +99,18 @@ export default function AllUsers() {
                   </td>
                   <td>{user.name}</td>
                   <td>{user.email}</td>
-                  <td className={user.role === "admin" ? "text-blue-600" : ""}>
-                    {user.role || "user"}
+                  <td>
+                    <span
+                      className={`text-sm badge ${
+                        user.role === "admin"
+                          ? "badge-success"
+                          : user.role === "teacher"
+                          ? "badge-error"
+                          : "badge-warning"
+                      }`}
+                    >
+                      {user.role || "user"}
+                    </span>
                   </td>
                   <td>
                     <button
