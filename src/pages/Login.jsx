@@ -58,11 +58,6 @@ export default function Login() {
     },
   });
 
-  const onSubmit = (data) => {
-    loginMutation.mutate(data);
-    console.log(data);
-  };
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 px-4">
       <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
@@ -70,7 +65,7 @@ export default function Login() {
           Welcome Back to
         </h2>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(loginMutation.mutate)}>
           {/* Email */}
           <div className="mb-4">
             <label className="block text-sm font-semibold text-gray-700 mb-1">

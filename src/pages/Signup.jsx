@@ -1,4 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { FaImage, FaLock, FaMailBulk, FaUser } from "react-icons/fa";
@@ -28,18 +29,31 @@ export default function Signup() {
 
   const signupMutation = useMutation({
     mutationFn: async (data) => {
+      // Create user on firebase
       const userCredential = await userSignup(data.email, data.password);
+
+      // Update user profile on firebase
       await updateUserProfile(userCredential.user, data.name, data.photoURL);
+
+      // Save user in database on MongoDB
+      await axios.post(`${import.meta.env.VITE_BASE_URL}/users`, {
+        name: data.name,
+        email: data.email,
+        photoURL: data.photoURL,
+        role: "student",
+      });
+
       return userCredential.user;
     },
     onSuccess: (user) => {
       setUser(user);
-      navigate("/login");
+      // navigate("/login");
       console.log(user);
     },
     onError: (error) => {
       console.log(error);
-      alert(error.response?.data?.message || "Signup failed");
+      const message = errorMap[error.code] || "Signup failed.";
+      toast.error(message);
     },
   });
 
@@ -48,8 +62,15 @@ export default function Signup() {
       const userCredential = await loginWithGoogle();
       return userCredential.user;
     },
-    onSuccess: (user) => {
+    onSuccess: async (user) => {
       setUser(user);
+      // Save user in database on MongoDB
+      await axios.post(`${import.meta.env.VITE_BASE_URL}/users`, {
+        name: user.name,
+        email: user.email,
+        photoURL: user.photoURL,
+        role: "student",
+      });
       toast.success("Login successful!");
       navigate("/");
     },
@@ -60,10 +81,6 @@ export default function Signup() {
     },
   });
 
-  const onSubmit = (data) => {
-    signupMutation.mutate(data);
-  };
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 px-4">
       <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
@@ -71,7 +88,7 @@ export default function Signup() {
           Create an account
         </h2>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(signupMutation.mutate)}>
           {/* Name */}
           <div className="mb-4">
             <label className="block text-sm font-semibold text-gray-700 mb-1">

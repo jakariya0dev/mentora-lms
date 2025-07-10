@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { useContext } from "react";
-import { Link } from "react-router";
+import { Link, NavLink } from "react-router";
 import { toast } from "react-toastify";
 import MenuIcon from "../../assets/icons/menu.svg";
 import { AuthContext } from "../../providers/AuthProvider";
@@ -25,7 +25,7 @@ export default function Navbar() {
         <a>Submenu 1</a>
       </li>
       <li>
-        <a>Submenu 2</a>
+        <NavLink to="/become-teacher">Become teacher</NavLink>
       </li>
     </>
   );
@@ -53,17 +53,32 @@ export default function Navbar() {
         <div className="navbar-end">
           {user ? (
             <>
-              <img
-                src={user.photoURL}
-                alt=""
-                className="w-10 h-10 rounded-full mr-4"
-              />
-              <Link
-                onClick={() => logoutMutation.mutate()}
-                className="btn btn-primary"
-              >
-                Logout
-              </Link>
+              <div className="dropdown">
+                <div tabIndex={1} role="button" className="">
+                  <img
+                    src={user.photoURL}
+                    alt=""
+                    className="w-10 h-10 rounded-full mr-4 ring-2 hover:ring-3 hover:ring-amber-500 transition-all duration-300"
+                  />
+                </div>
+                <ul
+                  tabIndex={1}
+                  className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+                >
+                  <li>
+                    <p>{user.displayName}</p>
+                  </li>
+                  <li>
+                    <Link to="/dashboard/profile">Profile</Link>
+                  </li>
+                  <li>
+                    <Link to="/dashboard">Dashboard</Link>
+                  </li>
+                  <li>
+                    <Link onClick={() => logoutMutation.mutate()}>Logout</Link>
+                  </li>
+                </ul>
+              </div>
             </>
           ) : (
             <Link to="/login" className="btn btn-primary">

@@ -1,3 +1,4 @@
+import axios from "axios";
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
@@ -15,17 +16,28 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const cleanup = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user);
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser) {
+        try {
+          const dbUser = await fetchMongoUser(currentUser.email);
+          setUser({ ...currentUser, ...dbUser });
+        } catch (error) {
+          console.error("Mongo user fetch failed:", error);
+          setUser(currentUser);
+        }
       } else {
         setUser(null);
       }
     });
-    return () => {
-      cleanup();
-    };
+    return () => unsubscribe();
   }, [auth]);
+
+  const fetchMongoUser = async (email) => {
+    const res = await axios.get(
+      `${import.meta.env.VITE_BASE_URL}/users/${email}`
+    );
+    return res.data;
+  };
 
   const userSignup = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
@@ -50,21 +62,17 @@ const AuthProvider = ({ children }) => {
     return signOut(auth);
   };
 
-  return (
-    <AuthContext
-      value={{
-        user,
-        setUser,
-        userSignup,
-        userLogin,
-        userLogout,
-        loginWithGoogle,
-        updateUserProfile,
-      }}
-    >
-      {children}
-    </AuthContext>
-  );
+  const authInfo = {
+    user,
+    setUser,
+    userSignup,
+    userLogin,
+    userLogout,
+    loginWithGoogle,
+    updateUserProfile,
+  };
+
+  return <AuthContext value={authInfo}>{children}</AuthContext>;
 };
 
 export { AuthContext, AuthProvider };

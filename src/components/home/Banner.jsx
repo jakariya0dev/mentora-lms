@@ -15,15 +15,17 @@ export default function Banner() {
         <div className="max-w-7xl mx-auto text-white flex items-center h-full">
           <div className="max-w-2xl">
             <h1 className="mb-5 text-6xl leading-tight font-bold">
-              Learn Any Skill to Advance Your <span className="underline decoration-amber-400 underline-offset-10 decoration-8">Career</span>
+              Learn Any Skill to Advance Your{" "}
+              <span className="underline decoration-amber-400 underline-offset-10 decoration-8">
+                Career
+              </span>
             </h1>
             <p className="md:mb-8 mb-5 text-xl">
               We're a modern LMS platform helping learners upskill in tech,
               design, and freelancing. Learn from expert mentors. Build your
               career your way.
             </p>
-            <div className="flex flex-wrap items-center gap-5">
-              <button className="btn btn-primary">Explore Courses</button>
+            <div className="flex flex-wrap items-center gap-8">
               <div className="avatar-group -space-x-6">
                 <div className="avatar">
                   <div className="w-12">
@@ -47,9 +49,11 @@ export default function Banner() {
                 </div>
               </div>
               <div>
-                <p className="text-4xl font-bold">3000+</p>
+                <p className="text-3xl font-bold">3000+</p>
                 <p className="text-lg font-semibold">Happy Students</p>
               </div>
+
+              <button className="btn btn-primary">Explore Courses</button>
             </div>
           </div>
         </div>
