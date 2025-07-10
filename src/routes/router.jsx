@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router";
 import App from "../App";
+import AllUsers from "../components/dashboard/AllUsers";
 import MyCourses from "../components/dashboard/MyCourses";
 import PendingTeachers from "../components/dashboard/PendingTeachers";
 import UserProfile from "../components/dashboard/UserProfile";
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
           {
             path: "pending-teachers",
             element: <PendingTeachers />,
+          },
+          {
+            path: "all-users",
+            element: <AllUsers />,
           },
         ],
       },
