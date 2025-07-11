@@ -17,7 +17,7 @@ export default function AllCourses() {
   const updateStatus = useMutation({
     mutationFn: async ({ id, status }) => {
       return await axios.patch(
-        `${import.meta.env.VITE_BASE_URL}/courses/${id}`,
+        `${import.meta.env.VITE_BASE_URL}/courses/change-status/${id}`,
         { status }
       );
     },
