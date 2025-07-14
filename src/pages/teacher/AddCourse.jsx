@@ -3,8 +3,8 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import useAuth from "../hooks/useAuth";
-import handleUpload from "../utils/ImageUploadApi";
+import useAuth from "../../hooks/useAuth";
+import handleUpload from "../../utils/ImageUploadApi";
 
 export default function AddCourse() {
   const { user } = useAuth();

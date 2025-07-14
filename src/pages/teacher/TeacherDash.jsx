@@ -8,21 +8,20 @@ export default function TeacherDash() {
         <h2 className="text-xl font-semibold mb-4">Dashboard</h2>
         <nav className="flex flex-col space-y-2">
           <NavLink
-            to="/dashboard/add-course"
-            className={({ isActive }) =>
-              isActive ? "text-yellow-300" : "hover:text-yellow-200"
-            }
-          >
-            Add Course
-          </NavLink>
-
-          <NavLink
             to="/dashboard/courses"
             className={({ isActive }) =>
               isActive ? "text-yellow-300" : "hover:text-yellow-200"
             }
           >
             My Course
+          </NavLink>
+          <NavLink
+            to="/dashboard/courses/add"
+            className={({ isActive }) =>
+              isActive ? "text-yellow-300" : "hover:text-yellow-200"
+            }
+          >
+            Add Course
           </NavLink>
 
           <NavLink

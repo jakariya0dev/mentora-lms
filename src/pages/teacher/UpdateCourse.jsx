@@ -2,9 +2,9 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import handleUpload from "../utils/ImageUploadApi";
+import handleUpload from "../../utils/ImageUploadApi";
 
-const UpdateCourse = ({ isOpen, setIsModalOpen, course, refetch }) => {
+const UpdateCourse = ({ isOpen, setIsOpen, course, refetch }) => {
   const {
     register,
     handleSubmit,
@@ -30,7 +30,7 @@ const UpdateCourse = ({ isOpen, setIsModalOpen, course, refetch }) => {
       toast.success("Course updated successfully!");
       refetch();
       reset();
-      setIsModalOpen(false);
+      setIsOpen(false);
     },
     onError: () => {
       toast.error("Failed to update course");
@@ -51,7 +51,7 @@ const UpdateCourse = ({ isOpen, setIsModalOpen, course, refetch }) => {
 
   // Close modal handler
   const closeModal = () => {
-    setIsModalOpen(false);
+    setIsOpen(false);
     reset();
   };
 

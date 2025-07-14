@@ -22,8 +22,11 @@ export default function Navbar() {
   const links = (
     <>
       <li>
-        <a>Submenu 1</a>
+        <NavLink to="/courses" className="font-semibold">
+          All Courses
+        </NavLink>
       </li>
+      <li></li>
       <li>
         <NavLink to="/become-teacher">Become teacher</NavLink>
       </li>

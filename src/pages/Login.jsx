@@ -112,9 +112,9 @@ export default function Login() {
           <button
             type="submit"
             className="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition duration-300"
-            disabled={loginMutation.isLoading}
+            disabled={loginMutation.isPending}
           >
-            {loginMutation.isLoading ? "Logging in..." : "Log In"}
+            {loginMutation.isPending ? "Logging in..." : "Log In"}
           </button>
         </form>
 

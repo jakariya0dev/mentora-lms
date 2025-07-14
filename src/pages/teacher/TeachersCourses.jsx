@@ -4,16 +4,20 @@ import { useState } from "react";
 import { Link } from "react-router";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
-import useAuth from "../hooks/useAuth";
+import useAuth from "../../hooks/useAuth";
 import UpdateCourse from "./UpdateCourse";
 
 export default function TeachersCourses() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
-  const { data: myCourses = [], isLoading, refetch } = useQuery({
+  const {
+    data: myCourses = [],
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["my-courses", user.email],
     queryFn: async () => {
       const res = await axios.get(
@@ -59,7 +63,7 @@ export default function TeachersCourses() {
 
   const handleEdit = (course) => {
     setSelectedCourse(course);
-    setIsModalOpen(true);
+    setIsUpdateModalOpen(true);
   };
 
   if (isLoading) return <p>Loading your courses...</p>;
@@ -127,12 +131,19 @@ export default function TeachersCourses() {
                     >
                       Delete
                     </button>
-                    <Link
-                      to={`/courses/details/${course._id}`}
-                      className="btn btn-sm btn-secondary"
-                    >
-                      See Details
-                    </Link>
+
+                    {course.status === "approved" ? (
+                      <Link
+                        to={`${course._id}`}
+                        className="btn btn-sm btn-secondary"
+                      >
+                        See Details
+                      </Link>
+                    ) : (
+                      <button className="btn btn-sm btn-disabled">
+                        See Details
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -142,8 +153,8 @@ export default function TeachersCourses() {
       </div>
       <UpdateCourse
         course={selectedCourse}
-        isOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
+        isOpen={isUpdateModalOpen}
+        setIsOpen={setIsUpdateModalOpen}
         refetch={refetch}
       />
     </>

@@ -1,16 +1,17 @@
 import { createBrowserRouter } from "react-router";
 import App from "../App";
-import AllCourses from "../components/dashboard/AllCourses";
-import AllUsers from "../components/dashboard/AllUsers";
-import PendingTeachers from "../components/dashboard/PendingTeachers";
-import UserProfile from "../components/dashboard/UserProfile";
-import AddCourse from "../pages/AddCourse";
+import ManageTeachers from "../pages/admin/ManageTeachers";
+import ManageUsers from "../pages/admin/ManageUsers";
 import BeTeacher from "../pages/BeTeacher";
+import CourseDash from "../pages/common/CourseDash";
+import DashBoard from "../pages/common/Dashboard";
+import Profile from "../pages/common/Profile";
 import Courses from "../pages/Courses";
-import DashBoard from "../pages/Dashboard";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
+import AddCourse from "../pages/teacher/AddCourse";
+import CourseDetails from "../pages/teacher/CourseDetails";
 
 const router = createBrowserRouter([
   {
@@ -30,39 +31,47 @@ const router = createBrowserRouter([
         element: <Signup />,
       },
       {
+        path: "/become-teacher",
+        element: <BeTeacher />,
+      },
+      {
+        path: "/courses",
+        element: <Courses />,
+      },
+      {
         path: "/dashboard",
         element: <DashBoard />,
         children: [
           {
             index: true,
-            path: "courses",
-            element: <Courses />,
+            element: <Profile />,
           },
           {
             path: "profile",
-            element: <UserProfile />,
+            element: <Profile />,
           },
           {
-            path: "pending-teachers",
-            element: <PendingTeachers />,
+            path: "courses",
+            element: <CourseDash />,
           },
           {
-            path: "all-users",
-            element: <AllUsers />,
-          },
-          {
-            path: "all-courses",
-            element: <AllCourses />,
-          },
-          {
-            path: "add-course",
+            path: "courses/add",
             element: <AddCourse />,
           },
+          {
+            path: "courses/:courseId",
+            element: <CourseDetails />,
+          },
+
+          {
+            path: "teachers",
+            element: <ManageTeachers />,
+          },
+          {
+            path: "users",
+            element: <ManageUsers />,
+          },
         ],
-      },
-      {
-        path: "/become-teacher",
-        element: <BeTeacher />,
       },
     ],
   },

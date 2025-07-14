@@ -3,7 +3,7 @@ import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
-import LoaderDotted from "../common/LoaderDotted";
+import LoaderDotted from "../../components/common/LoaderDotted";
 
 const fetchPendingTeachers = async (page = 1, limit = 10) => {
   const { data } = await axios.get(
