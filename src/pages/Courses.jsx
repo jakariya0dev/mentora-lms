@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
+import { Link } from "react-router";
 import { toast } from "react-toastify";
 
 const fetchCourses = async ({ queryKey }) => {
@@ -99,9 +100,12 @@ const AllCourses = () => {
                   {course.shortDescription}
                 </p>
                 <p className="text-sm text-gray-600">Price: ${course.price}</p>
-                <button className="mt-3 bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">
+                <Link
+                  to={`/courses/${course._id}`}
+                  className="mt-4 bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
+                >
                   Enroll Now
-                </button>
+                </Link>
               </div>
             ))}
           </div>

@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { useParams } from "react-router";
 import LoaderDotted from "../../components/common/LoaderDotted";
 
-const CourseDetails = () => {
+const CourseSummery = () => {
   const { courseId } = useParams();
   const [modalOpen, setModalOpen] = useState(false);
   const queryClient = useQueryClient();
@@ -162,7 +162,7 @@ const CourseDetails = () => {
   );
 };
 
-export default CourseDetails;
+export default CourseSummery;
 
 // Reusable card component
 const Card = ({ title, count }) => (

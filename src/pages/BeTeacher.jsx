@@ -65,20 +65,22 @@ const BeTeacher = () => {
         {/* Already Teacher */}
         {user?.status === "approved" && (
           <h2 className="flex items-center gap-4 text-2xl font-semibold mb-8 text-center text-red-500 bg-amber-200 p-4">
-            <FaInfoCircle className="text-amber-500" /> You are already a teacher
+            <FaInfoCircle className="text-amber-500" /> You are already a
+            teacher
           </h2>
         )}
 
         {/*  */}
         {user?.status === "pending" && (
           <h2 className="flex items-center gap-4 text-2xl font-semibold mb-8 text-center text-red-500">
-            <FaInfoCircle className="text-amber-500"/> Your request is pending
+            <FaInfoCircle className="text-amber-500" /> Your request is pending
           </h2>
         )}
 
         {user?.status === "rejected" && (
           <h2 className="flex items-center gap-4 text-2xl font-semibold mb-8 text-center text-red-500">
-            <FaInfoCircle className="text-amber-500"/>: Your request was rejected
+            <FaInfoCircle className="text-amber-500" />: Your request was
+            rejected
           </h2>
         )}
 

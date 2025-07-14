@@ -1,12 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
-import { useContext } from "react";
 import { Link, NavLink } from "react-router";
 import { toast } from "react-toastify";
 import MenuIcon from "../../assets/icons/menu.svg";
-import { AuthContext } from "../../providers/AuthProvider";
+import useAuth from "../../hooks/useAuth";
 
 export default function Navbar() {
-  const { user, userLogout } = useContext(AuthContext);
+  const { user, isUserLoading, userLogout } = useAuth();
 
   const logoutMutation = useMutation({
     mutationFn: userLogout,
@@ -18,6 +17,7 @@ export default function Navbar() {
       console.error(error);
     },
   });
+
 
   const links = (
     <>
@@ -48,48 +48,65 @@ export default function Navbar() {
               {links}
             </ul>
           </div>
-          <a className="text-xl">daisyUI</a>
+          <Link to="/">
+            <span className="text-xl font-bold">Mentora</span>
+          </Link>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">{links}</ul>
         </div>
         <div className="navbar-end">
-          {user ? (
-            <>
-              <div className="dropdown">
-                <div tabIndex={1} role="button" className="">
-                  <img
-                    src={user.photoURL}
-                    alt=""
-                    className="w-10 h-10 rounded-full mr-4 ring-2 hover:ring-3 hover:ring-amber-500 transition-all duration-300"
-                  />
-                </div>
-                <ul
-                  tabIndex={1}
-                  className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
-                >
-                  <li>
-                    <p>{user.displayName}</p>
-                  </li>
-                  <li>
-                    <Link to="/dashboard/profile">Profile</Link>
-                  </li>
-                  <li>
-                    <Link to="/dashboard">Dashboard</Link>
-                  </li>
-                  <li>
-                    <Link onClick={() => logoutMutation.mutate()}>Logout</Link>
-                  </li>
-                </ul>
-              </div>
-            </>
-          ) : (
-            <Link to="/login" className="btn btn-primary">
-              Login
-            </Link>
-          )}
+          <UserData
+            user={user}
+            isUserLoading={isUserLoading}
+            logoutMutation={logoutMutation}
+          />
         </div>
       </div>
     </nav>
   );
 }
+
+const UserData = ({ user, isUserLoading, logoutMutation }) => {
+  if (isUserLoading)
+    return <span className="loading loading-spinner loading-lg"></span>;
+
+  if (!user)
+    return (
+      <Link to="/login" className="btn btn-primary">
+        Login
+      </Link>
+    );
+
+  return (
+    <>
+      <div className="dropdown">
+        <div tabIndex={1} role="button" className="">
+          <img
+            src={user.photoURL}
+            alt=""
+            className="w-10 h-10 rounded-full mr-4 ring-2 hover:ring-3 hover:ring-amber-500 transition-all duration-300"
+          />
+        </div>
+
+        <ul
+          tabIndex={1}
+          className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+        >
+          <li>
+            <p>{user?.displayName}</p>
+          </li>
+          <li>
+            <Link to="/dashboard/profile">Profile</Link>
+          </li>
+          <li>
+            <Link to="/dashboard">Dashboard</Link>
+          </li>
+          <li>
+            <Link onClick={() => logoutMutation.mutate()}>Logout</Link>
+          </li>
+        </ul>
+      </div>
+    </>
+  );
+};

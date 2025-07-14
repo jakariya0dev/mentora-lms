@@ -10,8 +10,10 @@ import Courses from "../pages/Courses";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
+import CourseDetails from "../pages/student/CourseDetails";
+import StripeWrapper from "../pages/student/StripeWrapper";
 import AddCourse from "../pages/teacher/AddCourse";
-import CourseDetails from "../pages/teacher/CourseDetails";
+import CourseSummery from "../pages/teacher/CourseSummery";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +41,14 @@ const router = createBrowserRouter([
         element: <Courses />,
       },
       {
+        path: "/courses/:id",
+        element: <CourseDetails />,
+      },
+      {
+        path: "/payment/:id",
+        element: <StripeWrapper />,
+      },
+      {
         path: "/dashboard",
         element: <DashBoard />,
         children: [
@@ -60,7 +70,7 @@ const router = createBrowserRouter([
           },
           {
             path: "courses/:courseId",
-            element: <CourseDetails />,
+            element: <CourseSummery />,
           },
 
           {

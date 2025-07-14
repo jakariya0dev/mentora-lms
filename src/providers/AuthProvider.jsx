@@ -13,6 +13,7 @@ import { auth, provider } from "../../firebase.config";
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
+  const [isUserLoading, setIsUserLoading] = useState(true);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -24,9 +25,12 @@ const AuthProvider = ({ children }) => {
         } catch (error) {
           console.error("Mongo user fetch failed:", error);
           setUser(currentUser);
+        } finally {
+          setIsUserLoading(false);
         }
       } else {
         setUser(null);
+        setIsUserLoading(false);
       }
     });
     return () => unsubscribe();
@@ -65,6 +69,7 @@ const AuthProvider = ({ children }) => {
   const authInfo = {
     user,
     setUser,
+    isUserLoading,
     userSignup,
     userLogin,
     userLogout,

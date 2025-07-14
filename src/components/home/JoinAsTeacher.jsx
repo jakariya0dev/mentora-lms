@@ -1,6 +1,6 @@
-import React from "react";
-import { FaChalkboardTeacher, FaMoneyBillWave, FaGlobe } from "react-icons/fa";
-import teacherImg from "../../assets/images/banner.jpg"; 
+import { FaChalkboardTeacher, FaGlobe, FaMoneyBillWave } from "react-icons/fa";
+import { Link } from "react-router";
+import teacherImg from "../../assets/images/banner.jpg";
 
 export default function JoinAsTeacher() {
   return (
@@ -41,9 +41,12 @@ export default function JoinAsTeacher() {
             </div>
           </div>
 
-          <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg text-lg font-medium transition duration-200">
+          <Link
+            to="/become-teacher"
+            className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg text-lg font-medium transition duration-200"
+          >
             Become a Teacher
-          </button>
+          </Link>
         </div>
       </div>
     </section>
