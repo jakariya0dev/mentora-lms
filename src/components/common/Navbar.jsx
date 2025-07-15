@@ -1,7 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
+import { MdArrowRight } from "react-icons/md";
+import { TiThMenu } from "react-icons/ti";
 import { Link, NavLink } from "react-router";
 import { toast } from "react-toastify";
-import MenuIcon from "../../assets/icons/menu.svg";
 import useAuth from "../../hooks/useAuth";
 
 export default function Navbar() {
@@ -18,17 +19,26 @@ export default function Navbar() {
     },
   });
 
+  const activeNavLinkStyle = ({ isActive }) =>
+    isActive ? "text-primary font-semibold" : "font-semibold";
 
   const links = (
     <>
       <li>
-        <NavLink to="/courses" className="font-semibold">
+        <NavLink to="/" className={activeNavLinkStyle}>
+          Home
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/courses" className={activeNavLinkStyle}>
           All Courses
         </NavLink>
       </li>
-      <li></li>
+
       <li>
-        <NavLink to="/become-teacher">Become teacher</NavLink>
+        <NavLink to="/become-teacher" className={activeNavLinkStyle}>
+          Teach on Mentora
+        </NavLink>
       </li>
     </>
   );
@@ -38,8 +48,12 @@ export default function Navbar() {
       <div className="navbar max-w-7xl mx-auto">
         <div className="navbar-start">
           <div className="dropdown">
-            <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-              <img src={MenuIcon} alt="" />
+            <div
+              tabIndex={0}
+              role="button"
+              className="btn btn-ghost lg:hidden text-2xl"
+            >
+              <TiThMenu />
             </div>
             <ul
               tabIndex={0}
@@ -94,16 +108,25 @@ const UserData = ({ user, isUserLoading, logoutMutation }) => {
           className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
         >
           <li>
-            <p>{user?.displayName}</p>
+            <p className="font-semibold text-center">{user?.displayName}</p>
           </li>
           <li>
-            <Link to="/dashboard/profile">Profile</Link>
+            <Link to="/dashboard/profile">
+              <MdArrowRight />
+              Profile
+            </Link>
           </li>
           <li>
-            <Link to="/dashboard">Dashboard</Link>
+            <Link to="/dashboard">
+              <MdArrowRight />
+              Dashboard
+            </Link>
           </li>
           <li>
-            <Link onClick={() => logoutMutation.mutate()}>Logout</Link>
+            <Link onClick={() => logoutMutation.mutate()}>
+              <MdArrowRight />
+              Logout
+            </Link>
           </li>
         </ul>
       </div>
