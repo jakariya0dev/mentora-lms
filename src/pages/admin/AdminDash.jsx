@@ -8,7 +8,7 @@ export default function AdminDash() {
         <h2 className="text-xl font-semibold mb-4">Dashboard</h2>
         <nav className="flex flex-col space-y-2">
           <NavLink
-            to="/dashboard/pending-teachers"
+            to="/dashboard/teachers"
             className={({ isActive }) =>
               isActive ? "text-yellow-300" : "hover:text-yellow-200"
             }
@@ -16,7 +16,7 @@ export default function AdminDash() {
             Teacher Request
           </NavLink>
           <NavLink
-            to="/dashboard/all-users"
+            to="/dashboard/users"
             className={({ isActive }) =>
               isActive ? "text-yellow-300" : "hover:text-yellow-200"
             }
@@ -24,7 +24,7 @@ export default function AdminDash() {
             All Users
           </NavLink>
           <NavLink
-            to="/dashboard/all-courses"
+            to="/dashboard/courses"
             className={({ isActive }) =>
               isActive ? "text-yellow-300" : "hover:text-yellow-200"
             }

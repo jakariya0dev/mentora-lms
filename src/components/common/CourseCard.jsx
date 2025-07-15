@@ -20,21 +20,30 @@ export default function CourseCard({ course, index }) {
               {course.title}
             </h3>
             <p className="text-sm text-gray-600 mb-1">
-              By {course.instructor}{" "}
+              Created By {course.instructor[0]?.name}{" "}
               <span className="text-sm text-yellow-500 mb-1">
-                {renderStars(course.rating)}({course.rating.toFixed(1)})
+                {renderStars(course.rating)} ({course.rating?.toFixed(1)})
               </span>
             </p>
             <p className="text-indigo-600 font-medium mb-1">
-              {course.enrollments.toLocaleString()} Enrollments
+              Enrolled Students:{" "}
+              {course.totalEnrollments?.toString().padStart(2, 0)}
             </p>
 
-            <p className="text-xs text-gray-500 mb-1">
+            <p className="text-sm text-gray-500 mb-1">
               Category: <span className="font-medium">{course.category}</span>
             </p>
-            <p className="text-base font-bold text-green-600">
-              ${course.price.toFixed(2)}
-            </p>
+            <div className="flex justify-between items-center mt-4">
+              <p className="text-base font-bold text-indigo-600">
+                Price: ${Number(course.price).toFixed(2)}
+              </p>
+              <Link
+                to={`/courses/${course._id}`}
+                className="mt-4 bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
+              >
+                Enroll Now
+              </Link>
+            </div>
           </div>
         </div>
       </Link>

@@ -30,7 +30,7 @@ export default function AddCourse() {
       );
       return res.data;
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast.success("Course added successfully!");
       reset();
       navigate("/dashboard/courses");
@@ -76,7 +76,7 @@ export default function AddCourse() {
         <div>
           <label className="block mb-1 font-medium">Instructor Email</label>
           <input
-            {...register("email", { required: true })}
+            {...register("instructorEmail", { required: true })}
             defaultValue={user?.email || ""}
             readOnly
             className="w-full input input-bordered bg-gray-100"

@@ -6,6 +6,7 @@ import PlatformStats from "../components/home/PlatformStats";
 import PopularCourses from "../components/home/PopularCourses";
 import TrustedClients from "../components/home/TrustedClients";
 import WhyChoose from "../components/home/WhyChoose";
+import NewCourses from "../components/home/NewCourses";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <TrustedClients />
       <WhyChoose />
       <PopularCourses />
+      <NewCourses />
       <Feedback />
       <PlatformStats />
       <JoinAsTeacher />

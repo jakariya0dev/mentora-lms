@@ -9,7 +9,9 @@ export default function AllCourses() {
   const { data: courses = [], isLoading } = useQuery({
     queryKey: ["courses"],
     queryFn: async () => {
-      const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/courses`);
+      const res = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/courses/all`
+      );
       return res.data.courses;
     },
   });
@@ -55,7 +57,6 @@ export default function AllCourses() {
                 <th>Image</th>
                 <th>Title</th>
                 <th>Email</th>
-                <th>Description</th>
                 <th>Status</th>
                 <th>Progress</th>
                 <th>Actions</th>
@@ -72,12 +73,8 @@ export default function AllCourses() {
                     />
                   </td>
                   <td>{course.title}</td>
-                  <td>{course.email}</td>
-                  <td>
-                    <div className="line-clamp-2 text-sm">
-                      {course.description}
-                    </div>
-                  </td>
+                  <td>{course.instructorEmail}</td>
+
                   <td>
                     <span
                       className={`badge ${

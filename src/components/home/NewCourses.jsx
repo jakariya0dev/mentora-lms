@@ -23,14 +23,13 @@ const NextArrow = ({ onClick }) => (
   </button>
 );
 
-export default function PopularCourses() {
-  const { data: courses = [] } = useQuery({
-    queryKey: ["courses"],
+export default function NewCourses() {
+  const { data: NewCourses = [] } = useQuery({
+    queryKey: ["NewCourses"],
     queryFn: async () => {
       const response = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/courses/popular`
+        `${import.meta.env.VITE_BASE_URL}/courses/new`
       );
-      console.log("Popular courses fetched:", response.data.courses);
 
       return response.data.courses;
     },
@@ -63,11 +62,11 @@ export default function PopularCourses() {
     <section className="py-16 bg-white relative">
       <div className="max-w-7xl mx-auto px-4">
         <h2 className="text-3xl font-bold text-gray-600 mb-10">
-          Popular Courses
+          Recently Added Courses
         </h2>
 
         <Slider {...settings}>
-          {courses.map((course, index) => (
+          {NewCourses.map((course, index) => (
             <CourseCard key={index} course={course} />
           ))}
         </Slider>

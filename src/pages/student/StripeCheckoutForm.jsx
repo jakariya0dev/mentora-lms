@@ -22,8 +22,8 @@ const StripeCheckoutForm = ({ courseDetails }) => {
   const navigate = useNavigate();
 
   const { data: clientSecret } = useQuery({
-    enabled: !!courseDetails?.course?.price,
-    queryKey: ["stripeAmount", { amount: courseDetails?.course?.price }],
+    enabled: !!courseDetails?.price,
+    queryKey: ["stripeAmount", { amount: Number(courseDetails?.price) }],
     queryFn: createPaymentIntent,
   });
 
@@ -60,9 +60,9 @@ const StripeCheckoutForm = ({ courseDetails }) => {
       toast.error("Payment failed: " + error.message);
     } else {
       const enrollmentData = {
-        courseId: courseDetails.course._id,
+        courseId: courseDetails._id,
         email: user.email,
-        price: courseDetails.course.price,
+        price: courseDetails.price,
         paymentId: paymentIntent.id,
         paymentStatus: paymentIntent.status,
         createdAt: new Date().toISOString(),
@@ -77,7 +77,7 @@ const StripeCheckoutForm = ({ courseDetails }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full max-w-md p-4 shadow rounded border"
+      className="w-full p-4 shadow rounded border border-gray-200"
     >
       <CardElement className="border p-2 rounded mb-4" />
       <button

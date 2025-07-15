@@ -21,7 +21,7 @@ export default function TeachersCourses() {
     queryKey: ["my-courses", user.email],
     queryFn: async () => {
       const res = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/courses?email=${user.email}`
+        `${import.meta.env.VITE_BASE_URL}/courses/teacher/${user.email}`
       );
 
       return res.data.courses;
@@ -66,15 +66,16 @@ export default function TeachersCourses() {
     setIsUpdateModalOpen(true);
   };
 
-  if (isLoading) return <p>Loading your courses...</p>;
+  if (isLoading)
+    return (
+      <p className="text-center py-10 text-2xl">Loading your courses...</p>
+    );
   return (
     <>
       <div className="p-4">
         <h2 className="text-2xl font-bold mb-4">My Courses</h2>
 
-        {isLoading ? (
-          <p>Loading your courses...</p>
-        ) : myCourses.length === 0 ? (
+        {myCourses.length === 0 ? (
           <p>You haven't added any courses yet.</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
