@@ -1,12 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { FaImage, FaLock, FaMailBulk, FaUser } from "react-icons/fa";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import GoogleLogo from "../assets/icons/google.svg";
-import { AuthContext } from "../providers/AuthProvider";
+import LoaderDotted from "../components/common/LoaderDotted";
+import useAuth from "../hooks/useAuth";
 
 const errorMap = {
   "auth/invalid-email": "Invalid email address.",
@@ -17,38 +16,42 @@ const errorMap = {
 
 export default function Signup() {
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const { userSignup, loginWithGoogle, setUser, updateUserProfile } =
-    useContext(AuthContext);
+  const { userSignup, setUser, updateUserProfile, isUserLoading } = useAuth();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
 
   const signupMutation = useMutation({
     mutationFn: async (data) => {
-      // Create user on firebase
-      const userCredential = await userSignup(data.email, data.password);
-
-      // Update user profile on firebase
-      await updateUserProfile(userCredential.user, data.name, data.photoURL);
-
+      const userCredential = await userSignup(data.email, data.password); // Create user on firebase
+      await updateUserProfile(userCredential.user, data.name, data.photoURL); // Update user profile on firebase
+      await userCredential.user.reload(); // Reload user to get updated profile
+      return { firebaseUser: userCredential.user, formData: data };
+    },
+    onSuccess: async ({ firebaseUser, formData }) => {
       // Save user in database on MongoDB
       await axios.post(`${import.meta.env.VITE_BASE_URL}/users`, {
-        name: data.name,
-        email: data.email,
-        photoURL: data.photoURL,
+        name: formData.name,
+        email: firebaseUser.email,
+        photoURL: formData.photoURL,
         role: "student",
       });
+      console.log("User created successfully:", firebaseUser);
 
-      return userCredential.user;
-    },
-    onSuccess: (user) => {
-      setUser(user);
-      // navigate("/login");
-      console.log(user);
+      setUser(firebaseUser);
+      reset();
+      toast.success("Signup successful!");
+      if (location.state?.from) {
+        navigate(location.state.from);
+      } else {
+        navigate("/");
+      }
     },
     onError: (error) => {
       console.log(error);
@@ -56,30 +59,14 @@ export default function Signup() {
       toast.error(message);
     },
   });
+  const handleSubmitForm = (data) => {
+    if (signupMutation.isPending) return; // Prevent multiple submissions
+    signupMutation.mutate(data);
+  };
 
-  const googleLoginMutation = useMutation({
-    mutationFn: async () => {
-      const userCredential = await loginWithGoogle();
-      return userCredential.user;
-    },
-    onSuccess: async (user) => {
-      setUser(user);
-      // Save user in database on MongoDB
-      await axios.post(`${import.meta.env.VITE_BASE_URL}/users`, {
-        name: user.name,
-        email: user.email,
-        photoURL: user.photoURL,
-        role: "student",
-      });
-      toast.success("Login successful!");
-      navigate("/");
-    },
-    onError: (error) => {
-      const message = errorMap[error.code] || "Login failed.";
-      toast.error(message);
-      console.log(error);
-    },
-  });
+  if (isUserLoading) return <LoaderDotted />;
+
+  // if (user) return <Navigate to="/" replace />;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 px-4">
@@ -88,7 +75,7 @@ export default function Signup() {
           Create an account
         </h2>
 
-        <form onSubmit={handleSubmit(signupMutation.mutate)}>
+        <form onSubmit={handleSubmit(handleSubmitForm)}>
           {/* Name */}
           <div className="mb-4">
             <label className="block text-sm font-semibold text-gray-700 mb-1">
@@ -175,10 +162,9 @@ export default function Signup() {
           <button
             type="submit"
             className="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition duration-300"
-            disabled={signupMutation.isLoading}
-            onClick={() => signupMutation.mutate()}
+            disabled={signupMutation.isPending}
           >
-            {signupMutation.isLoading ? "Signing up..." : "Sign Up"}
+            {signupMutation.isPending ? "Signing up..." : "Sign Up"}
           </button>
         </form>
 
@@ -192,27 +178,6 @@ export default function Signup() {
             Log in
           </Link>
         </p>
-
-        <div className="divider">OR</div>
-        {/* Google Login Button */}
-        <button
-          className="w-full border text-gray-600 border-gray-400 py-2 rounded-md hover:shadow-lg transition duration-300"
-          disabled={googleLoginMutation.isLoading}
-          onClick={() => googleLoginMutation.mutate()}
-        >
-          {googleLoginMutation.isLoading ? (
-            "Signing..."
-          ) : (
-            <span className="flex items-center justify-center font-semibold">
-              <img
-                src={GoogleLogo}
-                alt="Google Logo"
-                className="w-6 h-6 mr-2"
-              />
-              Signup with Google
-            </span>
-          )}
-        </button>
       </div>
     </div>
   );

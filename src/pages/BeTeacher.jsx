@@ -10,16 +10,14 @@ const BeTeacher = () => {
   const { user } = useAuth();
 
   const becomeTeacherMutation = useMutation({
-    mutationFn: (data) => {
-      console.log(data);
-      const result = axios.post(
+    mutationFn: async (data) => {
+      const result = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/be-teacher/${user.email}`,
         data
       );
       return result.data;
     },
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: () => {
       Swal.fire({
         title: "Your request has been sent",
         text: "Please wait for approval. Thank you!",
@@ -70,13 +68,14 @@ const BeTeacher = () => {
           </h2>
         )}
 
-        {/*  */}
+        {/* Teacher Request Pending */}
         {user?.status === "pending" && (
           <h2 className="flex items-center gap-4 text-2xl font-semibold mb-8 text-center text-red-500">
             <FaInfoCircle className="text-amber-500" /> Your request is pending
           </h2>
         )}
 
+        {/* Teacher Request Rejected */}
         {user?.status === "rejected" && (
           <h2 className="flex items-center gap-4 text-2xl font-semibold mb-8 text-center text-red-500">
             <FaInfoCircle className="text-amber-500" />: Your request was
@@ -110,7 +109,6 @@ const BeTeacher = () => {
         <div>
           <label className="block font-medium">Experience Level</label>
           <select
-            name="experience"
             {...register("experience", { required: true })}
             className="select select-bordered w-full"
           >
@@ -152,7 +150,6 @@ const BeTeacher = () => {
           <label className="block font-medium">Category</label>
           <select
             defaultValue={user?.category || ""}
-            name="category"
             {...register("category", { required: true })}
             className="select select-bordered w-full"
           >
@@ -174,6 +171,7 @@ const BeTeacher = () => {
         <div className="text-center">
           <button
             disabled={
+              becomeTeacherMutation.isPending ||
               user?.status === "approved" ||
               user?.status === "pending" ||
               user?.status === "rejected"
@@ -181,7 +179,9 @@ const BeTeacher = () => {
             type="submit"
             className="btn btn-primary mt-4 px-6"
           >
-            Submit for Review
+            {becomeTeacherMutation.isPending
+              ? "Submitting..."
+              : "Submit Request"}
           </button>
         </div>
       </form>

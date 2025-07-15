@@ -1,11 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
-import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { FaLock, FaUser } from "react-icons/fa";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import GoogleLogo from "../assets/icons/google.svg";
-import { AuthContext } from "../providers/AuthProvider";
+import LoaderDotted from "../components/common/LoaderDotted";
+import useAuth from "../hooks/useAuth";
 
 const errorMap = {
   "auth/invalid-email": "Invalid email address.",
@@ -15,8 +15,10 @@ const errorMap = {
 };
 
 export default function Login() {
-  const { userLogin, loginWithGoogle, setUser } = useContext(AuthContext);
+  const { user, setUser, isUserLoading, userLogin, loginWithGoogle } =
+    useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const {
     register,
@@ -32,7 +34,11 @@ export default function Login() {
     onSuccess: (user) => {
       setUser(user);
       toast.success("Login successful!");
-      navigate("/");
+      if (location.state?.from) {
+        navigate(location.state.from);
+      } else {
+        navigate("/");
+      }
     },
     onError: (error) => {
       const message = errorMap[error.code] || "Login failed.";
@@ -49,7 +55,11 @@ export default function Login() {
     onSuccess: (user) => {
       setUser(user);
       toast.success("Login successful!");
-      navigate("/");
+      if (location.state?.from) {
+        navigate(location.state.from);
+      } else {
+        navigate("/");
+      }
     },
     onError: (error) => {
       const message = errorMap[error.code] || "Login failed.";
@@ -57,6 +67,10 @@ export default function Login() {
       console.log(error);
     },
   });
+
+  if (isUserLoading) return <LoaderDotted />;
+
+  if (user) return <Navigate to="/" replace />;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 px-4">
@@ -123,6 +137,7 @@ export default function Login() {
           Don’t have an account?{" "}
           <Link
             to="/signup"
+            state={{ from: location.state?.from || "/" }}
             className="text-indigo-600 hover:underline font-semibold"
           >
             Register here

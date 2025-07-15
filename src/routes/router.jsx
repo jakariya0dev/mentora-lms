@@ -14,6 +14,7 @@ import CourseDetails from "../pages/student/CourseDetails";
 import StripeWrapper from "../pages/student/StripeWrapper";
 import AddCourse from "../pages/teacher/AddCourse";
 import CourseSummery from "../pages/teacher/CourseSummery";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -34,7 +35,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/become-teacher",
-        element: <BeTeacher />,
+        element: <PrivateRoute> <BeTeacher /> </PrivateRoute>,
       },
       {
         path: "/courses",
