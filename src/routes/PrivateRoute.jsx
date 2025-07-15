@@ -6,6 +6,7 @@ export default function PrivateRoute({ children }) {
   const { user, isUserLoading } = useAuth();
   const location = useLocation();
 
+  
   if (isUserLoading) return <LoaderDotted />;
 
   return user ? (

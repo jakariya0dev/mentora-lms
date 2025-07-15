@@ -1,7 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 import { useForm } from "react-hook-form";
 import { FaLock, FaUser } from "react-icons/fa";
-import { Link, useLocation, useNavigate } from "react-router";
+import { Link, Navigate, useLocation, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import GoogleLogo from "../assets/icons/google.svg";
 import LoaderDotted from "../components/common/LoaderDotted";
@@ -31,7 +32,7 @@ export default function Login() {
       const userCredential = await userLogin(data.email, data.password);
       return userCredential.user;
     },
-    onSuccess: (user) => {
+    onSuccess: async (user) => {
       setUser(user);
       toast.success("Login successful!");
       if (location.state?.from) {
@@ -52,7 +53,15 @@ export default function Login() {
       const userCredential = await loginWithGoogle();
       return userCredential.user;
     },
-    onSuccess: (user) => {
+    onSuccess: async (user) => {
+      // Save user in database on MongoDB
+      await axios.post(`${import.meta.env.VITE_BASE_URL}/users`, {
+        name: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+        role: "student",
+      });
+
       setUser(user);
       toast.success("Login successful!");
       if (location.state?.from) {
@@ -149,21 +158,21 @@ export default function Login() {
         {/* Google Login Button */}
         <button
           className="w-full border text-gray-600 border-gray-400 py-2 rounded-md hover:shadow-lg transition duration-300"
-          disabled={googleLoginMutation.isLoading}
+          disabled={googleLoginMutation.isPending}
           onClick={() => googleLoginMutation.mutate()}
         >
-          {googleLoginMutation.isLoading ? (
-            "Logging in..."
-          ) : (
+          {
             <span className="flex items-center justify-center font-semibold">
               <img
                 src={GoogleLogo}
                 alt="Google Logo"
                 className="w-6 h-6 mr-2"
               />
-              Login with Google
+              {googleLoginMutation.isPending
+                ? "Logging with Google..."
+                : "Login with Google"}
             </span>
-          )}
+          }
         </button>
       </div>
     </div>

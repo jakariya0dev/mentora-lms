@@ -4,7 +4,7 @@ import teacherImg from "../../assets/images/banner.jpg";
 
 export default function JoinAsTeacher() {
   return (
-    <section className="bg-gray-100 py-20">
+    <section className="bg-gray-100 py-16 md:py-32">
       <div className="max-w-7xl mx-auto px-6 md:px-10 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
         {/* Left - Image */}
         <div>

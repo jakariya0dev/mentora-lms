@@ -8,7 +8,7 @@ export default function StudentDash() {
         <h2 className="text-xl font-semibold mb-4">Dashboard</h2>
         <nav className="flex flex-col space-y-2">
           <NavLink
-            to="/dashboard/my-courses"
+            to="/dashboard/courses"
             className={({ isActive }) =>
               isActive ? "text-yellow-300" : "hover:text-yellow-200"
             }

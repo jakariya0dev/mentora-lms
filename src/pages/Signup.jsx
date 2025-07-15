@@ -42,7 +42,6 @@ export default function Signup() {
         photoURL: formData.photoURL,
         role: "student",
       });
-      console.log("User created successfully:", firebaseUser);
 
       setUser(firebaseUser);
       reset();

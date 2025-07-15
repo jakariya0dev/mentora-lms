@@ -2,7 +2,7 @@ import { FaCertificate, FaClock, FaUserFriends, FaVideo } from "react-icons/fa";
 
 export default function WhyChoose() {
   return (
-    <section className="bg-gray-100 py-16 px-6">
+    <section className="bg-gray-100 py-16 md:py-32 px-6">
       <div className="max-w-7xl mx-auto text-center">
         <h2 className="text-4xl font-bold text-gray-800 mb-6">
           Why Choose <span className="text-indigo-600">Mentora?</span>

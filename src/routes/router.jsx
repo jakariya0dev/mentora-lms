@@ -9,12 +9,15 @@ import Profile from "../pages/common/Profile";
 import Courses from "../pages/Courses";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
+import NotFound from "../pages/NotFound";
 import Signup from "../pages/Signup";
 import CourseDetails from "../pages/student/CourseDetails";
 import StripeWrapper from "../pages/student/StripeWrapper";
 import AddCourse from "../pages/teacher/AddCourse";
 import CourseSummery from "../pages/teacher/CourseSummery";
+import Unauthorized from "../pages/Unauthorized";
 import PrivateRoute from "./PrivateRoute";
+import RoleBasedRoute from "./RoleBasedRoute";
 
 const router = createBrowserRouter([
   {
@@ -35,7 +38,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/become-teacher",
-        element: <PrivateRoute> <BeTeacher /> </PrivateRoute>,
+        element: (
+          <PrivateRoute>
+            <BeTeacher />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/courses",
@@ -43,15 +50,27 @@ const router = createBrowserRouter([
       },
       {
         path: "/courses/:id",
-        element: <CourseDetails />,
+        element: (
+          <PrivateRoute>
+            <CourseDetails />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/payment/:id",
-        element: <StripeWrapper />,
+        element: (
+          <PrivateRoute>
+            <StripeWrapper />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/dashboard",
-        element: <DashBoard />,
+        element: (
+          <PrivateRoute>
+            <DashBoard />
+          </PrivateRoute>
+        ),
         children: [
           {
             index: true,
@@ -59,30 +78,62 @@ const router = createBrowserRouter([
           },
           {
             path: "profile",
-            element: <Profile />,
+            element: (
+              <PrivateRoute>
+                <Profile />
+              </PrivateRoute>
+            ),
           },
           {
             path: "courses",
-            element: <CourseDash />,
+            element: (
+              <PrivateRoute>
+                <CourseDash />
+              </PrivateRoute>
+            ),
           },
           {
             path: "courses/add",
-            element: <AddCourse />,
+            element: (
+              <RoleBasedRoute allowedRoles={["teacher"]}>
+                <AddCourse />
+              </RoleBasedRoute>
+            ),
           },
           {
             path: "courses/:courseId",
-            element: <CourseSummery />,
+            element: (
+              <RoleBasedRoute allowedRoles={["teacher"]}>
+                <CourseSummery />
+              </RoleBasedRoute>
+            ),
           },
 
           {
             path: "teachers",
-            element: <ManageTeachers />,
+            element: (
+              <RoleBasedRoute allowedRoles={["admin"]}>
+                <ManageTeachers />
+              </RoleBasedRoute>
+            ),
           },
           {
             path: "users",
-            element: <ManageUsers />,
+            element: (
+              <RoleBasedRoute allowedRoles={["admin"]}>
+                <ManageUsers />
+              </RoleBasedRoute>
+            ),
           },
         ],
+      },
+      {
+        path: "*",
+        element: <NotFound />,
+      },
+      {
+        path: "unauthorized",
+        element: <Unauthorized />,
       },
     ],
   },

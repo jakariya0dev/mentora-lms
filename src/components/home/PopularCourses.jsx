@@ -30,7 +30,7 @@ export default function PopularCourses() {
       const response = await axios.get(
         `${import.meta.env.VITE_BASE_URL}/courses/popular`
       );
-      console.log("Popular courses fetched:", response.data.courses);
+      // console.log("Popular courses fetched:", response.data.courses);
 
       return response.data.courses;
     },
@@ -60,7 +60,7 @@ export default function PopularCourses() {
   };
 
   return (
-    <section className="py-16 bg-white relative">
+    <section className="py-16 md:py-32 bg-white relative">
       <div className="max-w-7xl mx-auto px-4">
         <h2 className="text-3xl font-bold text-gray-600 mb-10">
           Popular Courses

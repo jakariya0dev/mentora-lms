@@ -2,7 +2,7 @@ import statsImage from "../../assets/images/banner.jpg"; // replace with your re
 
 export default function PlatformStats() {
   return (
-    <section className="py-16 bg-white">
+    <section className="py-16 md:py-32 bg-white">
       <div className="max-w-7xl mx-auto px-6 md:px-10 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
         {/* Left Side - Cards */}
         <div>

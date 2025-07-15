@@ -3,6 +3,7 @@ import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router";
 import { toast } from "react-toastify";
+import LoaderDotted from "../components/common/LoaderDotted";
 
 const fetchCourses = async ({ queryKey }) => {
   const [, { page, searchTerm }] = queryKey;
@@ -45,8 +46,10 @@ const AllCourses = () => {
     }
   };
 
+  if (isLoading) return <LoaderDotted />;
+
   return (
-    <div className="max-w-6xl mx-auto px-4 py-6">
+    <div className="max-w-7xl mx-auto px-4 py-6">
       <h2 className="text-3xl font-bold mb-4 text-center">All Courses</h2>
 
       {/* Search Bar */}
@@ -67,12 +70,13 @@ const AllCourses = () => {
       </div>
 
       {/* Courses List */}
-      {isLoading ? (
-        <p className="text-center">Loading...</p>
-      ) : (
-        <div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {data.courses.map((course) => (
+
+      <div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {data.length === 0 ? (
+            <p className="text-center text-gray-500">No courses found</p>
+          ) : (
+            data.courses.map((course) => (
               <div
                 key={course._id}
                 className="border border-gray-200 p-4 rounded-xl shadow hover:shadow-lg"
@@ -107,19 +111,19 @@ const AllCourses = () => {
                   Enroll Now
                 </Link>
               </div>
-            ))}
-          </div>
-          <div className="join mt-10 flex justify-center">
-            <button onClick={handlePrevPage} className="join-item btn text-lg">
-              «
-            </button>
-            <button className="join-item btn">Page {currentPage}</button>
-            <button onClick={handleNextPage} className="join-item btn text-lg">
-              »
-            </button>
-          </div>
+            ))
+          )}
         </div>
-      )}
+        <div className="join mt-10 flex justify-center">
+          <button onClick={handlePrevPage} className="join-item btn text-lg">
+            «
+          </button>
+          <button className="join-item btn">Page {currentPage}</button>
+          <button onClick={handleNextPage} className="join-item btn text-lg">
+            »
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
