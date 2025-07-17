@@ -7,8 +7,8 @@ export default function UserProfile() {
   if (!user) return <p>Loading...</p>;
 
   return (
-    <div className="h-full">
-      <div className="flex flex-col items-center gap-4 p-6">
+    <div className="h-full p-10">
+      <div className="flex flex-col items-center gap-4 p-6 max-w-2xl mx-auto">
         <img
           src={user.photoURL || user.image || "/default-avatar.png"}
           alt="Profile"
@@ -26,7 +26,7 @@ export default function UserProfile() {
           </div>
           <div className="flex items-center gap-3 mx-10 my-5 px-4 py-4 rounded bg-gray-100 shadow-lg">
             <FaUserShield className="text-green-600" />
-            <p>
+            <p className="capitalize">
               <span className="font-semibold">Role:</span> {user.role || "N/A"}
             </p>
           </div>

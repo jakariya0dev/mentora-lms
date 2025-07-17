@@ -30,6 +30,10 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
+        path: "/courses",
+        element: <Courses />,
+      },
+      {
         path: "/login",
         element: <Login />,
       },
@@ -44,10 +48,6 @@ const router = createBrowserRouter([
             <BeTeacher />
           </PrivateRoute>
         ),
-      },
-      {
-        path: "/courses",
-        element: <Courses />,
       },
       {
         path: "/courses/:id",
