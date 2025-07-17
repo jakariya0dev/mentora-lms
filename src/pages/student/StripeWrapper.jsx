@@ -53,7 +53,7 @@ const StripeWrapper = () => {
               <h3 className="text-xl font-semibold mb-2 text-gray-800">
                 Selected Course
               </h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
+              <p className="text-gray-600 font-semibold leading-relaxed">
                 {courseDetails?.title}
               </p>
             </div>

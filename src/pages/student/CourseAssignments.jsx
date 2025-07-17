@@ -1,9 +1,8 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { useParams } from "react-router";
-import { toast } from "react-toastify";
+import AssignmentModal from "../../components/common/AssignmentModal";
 import GiveFeedbackModal from "../../components/common/GiveFeedbackModal";
 import LoaderDotted from "../../components/common/LoaderDotted";
 import useAuth from "../../hooks/useAuth";
@@ -13,8 +12,8 @@ const CourseAssignments = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const { register, handleSubmit, setValue } = useForm();
+  const [isAssignmentModalOpen, setIsAssignmentModalOpen] = useState(false);
+  const [selectedAssignmentId, setSelectedAssignmentId] = useState(null);
 
   // Fetching assignments for the course
   const {
@@ -27,13 +26,27 @@ const CourseAssignments = () => {
       const { data } = await axios.get(
         `${import.meta.env.VITE_BASE_URL}/assignments/${courseId}/${user.email}`
       );
+      console.log("Assignments fetched:", data.assignments);
       return data.assignments;
     },
     enabled: !!courseId,
   });
 
-  // Get feedback mutation
+  // Fetching course info
+  const { data: courseInfo = {} } = useQuery({
+    queryKey: ["courseInfo", courseId],
+    queryFn: async () => {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/courses/${courseId}`
+      );
+      console.log("Course info fetched:", data.course);
 
+      return data.course;
+    },
+    enabled: !!courseId,
+  });
+
+  // Fetching existing feedbacks
   const { data: existingFeedbacks } = useQuery({
     queryKey: ["feedbacks", courseId, user.email],
     queryFn: async () => {
@@ -52,38 +65,17 @@ const CourseAssignments = () => {
     enabled: !!courseId && !!user?.email,
   });
 
-  const submitMutation = useMutation({
-    mutationFn: async (submissionData) => {
-      return axios.post(
-        `${import.meta.env.VITE_BASE_URL}/submissions`,
-        submissionData
-      );
-    },
-    onSuccess: () => {
-      toast.success("Assignment submitted successfully!");
-      queryClient.invalidateQueries(["assignments", courseId]);
-    },
-    onError: () => {
-      toast.error("Failed to submit assignment.");
-    },
-  });
+  const onSubmit = (assignmentId) => {
+    // const payload = {
+    //   assignmentId: data.assignmentId,
+    //   courseId,
+    //   studentEmail: user.email,
+    //   submissionLink: data.submissionLink,
+    //   submittedAt: new Date().toISOString(),
+    // };
 
-  const onSubmit = (data) => {
-    if (!data.submissionLink) {
-      toast.error("Please enter a valid submission link.");
-      return;
-    }
-
-    const payload = {
-      assignmentId: data.assignmentId,
-      courseId,
-      studentEmail: user.email,
-      submissionLink: data.submissionLink,
-      submittedAt: new Date().toISOString(),
-    };
-
-    submitMutation.mutate(payload);
-    setValue("submissionLink", "");
+    setSelectedAssignmentId(assignmentId);
+    setIsAssignmentModalOpen(true);
   };
 
   if (isLoading) return <LoaderDotted />;
@@ -104,7 +96,13 @@ const CourseAssignments = () => {
           Give Feedback
         </button>
       </div>
-      <h2 className="text-2xl font-bold mb-4">Course Assignments</h2>
+      <h2 className="text-2xl font-bold mb-4">
+        Assignments{" "}
+        <span className="text-lg italic font-semibold">
+          (Course: {courseInfo.title})
+        </span>
+      </h2>
+
       {assignments.length === 0 ? (
         <p>No assignments available.</p>
       ) : (
@@ -134,36 +132,15 @@ const CourseAssignments = () => {
                   </td>
                   <td className="px-4 py-2 border border-gray-200">
                     {assignment._id ===
-                    assignment.studentSubmission[0].assignmentId ? (
+                    assignment.studentSubmission[0]?.assignmentId ? (
                       <p className="text-blue-600">Submitted</p>
                     ) : (
-                      <form
-                        onSubmit={handleSubmit(onSubmit)}
-                        className="flex items-center gap-2"
+                      <button
+                        onClick={() => onSubmit(assignment._id)}
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm"
                       >
-                        <input
-                          type="hidden"
-                          value={assignment._id}
-                          {...register("assignmentId")}
-                        />
-                        <input
-                          type="url"
-                          placeholder="Submission link"
-                          className="border p-1 rounded text-sm w-48"
-                          {...register("submissionLink", {
-                            required: "Submission link is required",
-                          })}
-                        />
-                        <button
-                          type="submit"
-                          disabled={submitMutation.isPending}
-                          className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm"
-                        >
-                          {submitMutation.isLoading
-                            ? "Submitting..."
-                            : "Submit"}
-                        </button>
-                      </form>
+                        Submit
+                      </button>
                     )}
                   </td>
                 </tr>
@@ -178,6 +155,15 @@ const CourseAssignments = () => {
           setIsModalOpen={setIsModalOpen}
           courseId={courseId}
           existingFeedbacks={existingFeedbacks}
+          queryClient={queryClient}
+        />
+      )}
+
+      {isAssignmentModalOpen && (
+        <AssignmentModal
+          setIsAssignmentModalOpen={setIsAssignmentModalOpen}
+          assignmentId={selectedAssignmentId}
+          courseId={courseId}
           queryClient={queryClient}
         />
       )}

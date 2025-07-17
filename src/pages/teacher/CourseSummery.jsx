@@ -32,11 +32,13 @@ const CourseSummery = () => {
         enrollments: enrollments.data.enrollments,
         assignments: assignments.data.assignments,
       };
+
       return result;
     },
     onError: (error) => {
       console.error("Error fetching course stats:", error);
     },
+    enabled: !!courseId,
   });
 
   // ------------------ CREATE ASSIGNMENT ------------------ //
@@ -58,7 +60,7 @@ const CourseSummery = () => {
   // ------------------ SUBMIT FORM ------------------ //
   const onSubmit = (data) => {
     data.courseId = courseId;
-    data.createdAt = new Date().toISOString();
+    data.createdAt = new Date();
     addAssignmentMutation.mutate(data);
     reset();
     setModalOpen(false);
