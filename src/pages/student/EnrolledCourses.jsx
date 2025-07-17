@@ -36,7 +36,7 @@ export default function EnrolledCouses() {
             <span className="font-semibold">{course.instructor[0]?.name}</span>
           </p>
           <Link
-            to={`/courses/${course._id}`}
+            to={`/dashboard/assignments/${course._id}`}
             className="mt-auto bg-blue-600 text-white px-4 py-2 rounded-lg text-center hover:bg-blue-700"
           >
             Continue

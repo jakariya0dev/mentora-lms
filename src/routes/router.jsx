@@ -11,6 +11,7 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import NotFound from "../pages/NotFound";
 import Signup from "../pages/Signup";
+import CourseAssignments from "../pages/student/CourseAssignments";
 import CourseDetails from "../pages/student/CourseDetails";
 import StripeWrapper from "../pages/student/StripeWrapper";
 import AddCourse from "../pages/teacher/AddCourse";
@@ -90,6 +91,14 @@ const router = createBrowserRouter([
               <PrivateRoute>
                 <CourseDash />
               </PrivateRoute>
+            ),
+          },
+          {
+            path: "assignments/:courseId",
+            element: (
+              <RoleBasedRoute allowedRoles={["student"]}>
+                <CourseAssignments />
+              </RoleBasedRoute>
             ),
           },
           {

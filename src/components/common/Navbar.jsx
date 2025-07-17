@@ -63,7 +63,7 @@ export default function Navbar() {
             </ul>
           </div>
           <Link to="/">
-            <span className="text-xl font-bold">Mentora</span>
+            <span className="text-2xl font-bold">Mentora</span>
           </Link>
         </div>
         <div className="navbar-center hidden lg:flex">
