@@ -1,44 +1,42 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
-import LoaderDotted from "../../components/common/LoaderDotted";
-
-const fetchPendingTeachers = async (page = 1, limit = 10) => {
-  const { data } = await axios.get(
-    `${import.meta.env.VITE_BASE_URL}/teachers?page=${page}&limit=${limit}`
-  );
-
-  console.log(data);
-
-  return data;
-};
+import LoaderSpinner from "../../components/common/LoaderSpinner";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const PendingTeachers = () => {
   const [page, setPage] = useState(1);
   const queryClient = useQueryClient();
+  const axiosSecure = useAxiosSecure();
 
   const { data, isLoading } = useQuery({
     queryKey: ["pendingTeachers", page],
-    queryFn: () => fetchPendingTeachers(page),
+    queryFn: () => fetchTeachers(page),
   });
 
   const statusMutation = useMutation({
     mutationFn: async ({ id, status }) => {
-      return await axios.patch(
-        `${import.meta.env.VITE_BASE_URL}/change-teacher-status/${id}`,
-        { status }
-      );
+      return await axiosSecure.patch(`/change-teacher-status/${id}`, {
+        status,
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["pendingTeachers"]);
       toast.success("Status updated successfully!");
     },
     onError: () => {
-      toast.error("Failed to update status. Try again.");
+      toast.error("Failed to update status.");
     },
   });
+
+  const fetchTeachers = async (page = 1, limit = 10) => {
+    const { data } = await axiosSecure.get(
+      `/teachers?page=${page}&limit=${limit}`
+    );
+    // console.log(data);
+    return data;
+  };
 
   const handleStatusChange = (id, status) => {
     Swal.fire({
@@ -53,8 +51,34 @@ const PendingTeachers = () => {
     });
   };
 
-  if (!data) return <LoaderDotted />;
-  if (isLoading) return <LoaderDotted />;
+  if (isLoading) return <LoaderSpinner />;
+
+  if (data?.teachers?.length === 0) {
+    return (
+      <div className="p-10">
+        <h2 className="text-2xl font-semibold mb-4">
+          Pending Teacher Requests
+        </h2>
+        <p className="text-xl">No pending teacher requests found.</p>
+      </div>
+    );
+  }
+
+  const handleNextPage = () => {
+    if (data.hasNextPage) {
+      setPage((prevPage) => prevPage + 1);
+    } else {
+      toast.error("No more pages available");
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (page > 1) {
+      setPage((prevPage) => prevPage - 1);
+    } else {
+      toast.error("You are already on the first page");
+    }
+  };
 
   return (
     <div className="p-4">
@@ -129,14 +153,18 @@ const PendingTeachers = () => {
         <div className="mt-4 flex justify-center gap-4">
           <button
             disabled={page === 1}
-            onClick={() => setPage((p) => p - 1)}
-            className="px-4 py-1 bg-blue-500 text-white rounded disabled:opacity-50"
+            onClick={handlePrevPage}
+            className="btn btn-primary"
           >
             Previous
           </button>
+          <div className="px-4 py-1 border border-gray-300 rounded">
+            Page: {page}
+          </div>
           <button
-            onClick={() => setPage((p) => p + 1)}
-            className="px-4 py-1 bg-blue-500 text-white rounded"
+            disabled={!data.hasNextPage}
+            onClick={handleNextPage}
+            className="btn btn-primary"
           >
             Next
           </button>

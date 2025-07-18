@@ -1,10 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import LoaderDotted from "../../components/common/LoaderDotted";
 import useAuth from "../../hooks/useAuth";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 import UpdateCourse from "./UpdateCourse";
 
 export default function TeachersCourses() {
@@ -12,6 +13,7 @@ export default function TeachersCourses() {
   const [selectedCourse, setSelectedCourse] = useState(null);
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  const axiosSecure = useAxiosSecure();
 
   const {
     data: myCourses = [],
@@ -20,10 +22,7 @@ export default function TeachersCourses() {
   } = useQuery({
     queryKey: ["my-courses", user.email],
     queryFn: async () => {
-      const res = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/courses/teacher/${user.email}`
-      );
-
+      const res = await axiosSecure.get(`/courses/teacher/${user.email}`);
       return res.data.courses;
     },
   });
@@ -32,9 +31,7 @@ export default function TeachersCourses() {
     mutationFn: async (id) => {
       console.log(id);
 
-      const res = await axios.delete(
-        `${import.meta.env.VITE_BASE_URL}/courses/${id}`
-      );
+      const res = await axiosSecure.delete(`/courses/${id}`);
       return res.data;
     },
     onSuccess: () => {
@@ -66,10 +63,7 @@ export default function TeachersCourses() {
     setIsUpdateModalOpen(true);
   };
 
-  if (isLoading)
-    return (
-      <p className="text-center py-10 text-2xl">Loading your courses...</p>
-    );
+  if (isLoading) return <LoaderDotted />;
   return (
     <>
       <div className="p-4">
@@ -91,15 +85,8 @@ export default function TeachersCourses() {
                 />
                 <div className="mt-3">
                   <h3 className="text-lg font-bold">{course.title}</h3>
-                  <p>
-                    <span className="text-sm font-semibold">Instructor:</span>{" "}
-                    {course.name}
-                  </p>
-                  <p>
-                    <span className="text-sm font-semibold">Email:</span>{" "}
-                    {course.email}
-                  </p>
-                  <p>
+
+                  <p className="mt-2">
                     <span className="text-sm font-semibold">Price:</span> $
                     {course.price}
                   </p>
@@ -119,7 +106,7 @@ export default function TeachersCourses() {
                     </span>
                   </p>
 
-                  <div className="flex flex-wrap gap-2 mt-3">
+                  <div className="flex flex-wrap gap-2 mt-6">
                     <button
                       className="btn btn-sm btn-info"
                       onClick={() => handleEdit(course)}

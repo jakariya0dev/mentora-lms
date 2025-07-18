@@ -1,8 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import useAuth from "../../hooks/useAuth";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 export default function AssignmentModal({
   setIsAssignmentModalOpen,
@@ -12,19 +12,20 @@ export default function AssignmentModal({
 }) {
   const { user } = useAuth();
   const { register, handleSubmit, reset } = useForm();
+  const axiosSecure = useAxiosSecure();
 
   // feedback submit mutation
   const submitAssignmentMutation = useMutation({
     mutationFn: (data) => {
-      return axios.post(`${import.meta.env.VITE_BASE_URL}/submissions`, data);
+      return axiosSecure.post(`/submissions`, data);
     },
     onSuccess: () => {
-      toast.success("Assignment submitted successfully.");
       queryClient.invalidateQueries(["assignments", courseId]);
-      reset();
-      setIsAssignmentModalOpen(false);
+      resetTheModal();
+      toast.success("Assignment submitted successfully.");
     },
     onError: (error) => {
+      resetTheModal();
       toast.error("Failed to submit feedback.");
       console.error(error);
     },
@@ -39,6 +40,11 @@ export default function AssignmentModal({
       submittedAt: new Date(),
     };
     submitAssignmentMutation.mutate(assignment);
+  };
+
+  const resetTheModal = () => {
+    reset();
+    setIsAssignmentModalOpen(false);
   };
 
   return (

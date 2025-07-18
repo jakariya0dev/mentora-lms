@@ -1,9 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import useAuth from "../../hooks/useAuth";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 import handleUpload from "../../utils/ImageUploadApi";
 
 export default function AddCourse() {
@@ -15,6 +15,7 @@ export default function AddCourse() {
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
+  const axiosSecure = useAxiosSecure();
 
   // Mutation to upload image to imagekit
   const uploadImageMutation = useMutation({
@@ -24,10 +25,7 @@ export default function AddCourse() {
   // Mutation to save course to DB
   const saveCourseMutation = useMutation({
     mutationFn: async (course) => {
-      const res = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/courses/add`,
-        course
-      );
+      const res = await axiosSecure.post(`/courses/add`, course);
       return res.data;
     },
     onSuccess: () => {
@@ -35,8 +33,9 @@ export default function AddCourse() {
       reset();
       navigate("/dashboard/courses");
     },
-    onError: () => {
+    onError: (error) => {
       toast.error("Failed to add course");
+      console.log(error);
     },
   });
 

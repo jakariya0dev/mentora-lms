@@ -1,10 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 import handleUpload from "../../utils/ImageUploadApi";
 
 const UpdateCourse = ({ isOpen, setIsOpen, course, refetch }) => {
+  const axiosSecure = useAxiosSecure();
   const {
     register,
     handleSubmit,
@@ -20,7 +21,7 @@ const UpdateCourse = ({ isOpen, setIsOpen, course, refetch }) => {
   // Mutation to save course to DB
   const updateCourseMutation = useMutation({
     mutationFn: async (updatedCourse) => {
-      const res = await axios.patch(
+      const res = await axiosSecure.patch(
         `${import.meta.env.VITE_BASE_URL}/courses/${course._id}`,
         updatedCourse
       );

@@ -1,25 +1,27 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { Link } from "react-router";
+import LoaderDotted from "../../components/common/LoaderDotted";
 import useAuth from "../../hooks/useAuth";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 export default function EnrolledCouses() {
   const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
 
-  const { data: enrolledCourses = [] } = useQuery({
+  const { data: enrolledCourses = [], isLoading } = useQuery({
     queryKey: ["enrolledCourses"],
     queryFn: async () => {
-      const response = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/courses/enrolled/${user?.email}`
+      const response = await axiosSecure.get(
+        `/courses/enrolled/${user?.email}`
       );
-      // console.log("Enrolled courses fetched:", response.data.enrolledCourses);
 
+      console.log(response.data);
       return response.data.enrolledCourses;
     },
     enabled: !!user?.email,
   });
 
-  if (!enrolledCourses) return <LoaderDotted />;
+  if (isLoading) return <LoaderDotted />;
 
   if (enrolledCourses.length === 0)
     return (

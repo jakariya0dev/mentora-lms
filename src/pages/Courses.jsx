@@ -28,7 +28,7 @@ const AllCourses = () => {
     refetch();
   };
 
-  console.log(data);
+  // console.log(data);
 
   const handleNextPage = () => {
     if (data.hasNextPage) {
@@ -46,7 +46,19 @@ const AllCourses = () => {
     }
   };
 
+  const renderStars = (rating) => {
+    const stars = Math.round(rating);
+    return "★".repeat(stars) + "☆".repeat(5 - stars);
+  };
+
   if (isLoading) return <LoaderDotted />;
+
+  if (data.length === 0)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-2xl font-bold">No courses found</p>
+      </div>
+    );
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6">
@@ -84,32 +96,39 @@ const AllCourses = () => {
                 <img
                   src={course.image}
                   alt={course.title}
-                  className="h-48 w-full object-cover rounded mb-3"
+                  className="h-48 w-full object-cover rounded mb-4"
                 />
                 <h3 className="text-lg font-semibold">{course.title}</h3>
-                <p className="text-sm text-gray-600 mb-1">
+                <p className=" text-gray-600 mb-1">
                   Created by{" "}
                   <span className="font-semibold">
-                    {course.instructor[0]?.name || "N/A"}
+                    {course.instructor[0]?.name || "N/A"}{" "}
+                    <span className="text-sm text-yellow-500 mb-1">
+                      {renderStars(course.rating)} ({course.rating?.toFixed(1)})
+                    </span>
                   </span>
                 </p>
 
-                <p className="text-sm text-gray-600">
+                <p className="text-gray-600">
                   Enrolled Students:{" "}
                   <span className="font-semibold text-blue-600">
                     {course.totalEnrollments.toString().padStart(2, 0)}
                   </span>{" "}
                 </p>
-                <p className="text-gray-700 text-sm mt-2">
-                  {course.shortDescription}
+                <p className="text-gray-600 mt-3">
+                  {course.description?.slice(0, 100) + " ..."}
                 </p>
-                <p className="text-sm text-gray-600">Price: ${course.price}</p>
-                <Link
-                  to={`/courses/${course._id}`}
-                  className="mt-4 bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
-                >
-                  Enroll Now
-                </Link>
+                <div className="mt-5 flex justify-between items-center">
+                  <p className="text-gray-600 text-xl font-semibold">
+                    Price: ${course.price}
+                  </p>
+                  <Link
+                    to={`/courses/${course._id}`}
+                    className=" bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
+                  >
+                    Enroll Now
+                  </Link>
+                </div>
               </div>
             ))
           )}

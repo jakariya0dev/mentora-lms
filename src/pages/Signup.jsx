@@ -1,11 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { useForm } from "react-hook-form";
 import { FaImage, FaLock, FaMailBulk, FaUser } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import LoaderDotted from "../components/common/LoaderDotted";
 import useAuth from "../hooks/useAuth";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const errorMap = {
   "auth/invalid-email": "Invalid email address.",
@@ -17,6 +17,7 @@ const errorMap = {
 export default function Signup() {
   const navigate = useNavigate();
   const location = useLocation();
+  const axiosSecure = useAxiosSecure();
 
   const { userSignup, setUser, updateUserProfile, isUserLoading } = useAuth();
 
@@ -36,7 +37,7 @@ export default function Signup() {
     },
     onSuccess: async ({ firebaseUser, formData }) => {
       // Save user in database on MongoDB
-      await axios.post(`${import.meta.env.VITE_BASE_URL}/users`, {
+      await axiosSecure.post(`/users`, {
         name: formData.name,
         email: firebaseUser.email,
         photoURL: formData.photoURL,
@@ -59,7 +60,7 @@ export default function Signup() {
     },
   });
   const handleSubmitForm = (data) => {
-    if (signupMutation.isPending) return; // Prevent multiple submissions
+    if (signupMutation.isPending) return;
     signupMutation.mutate(data);
   };
 

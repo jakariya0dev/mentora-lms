@@ -1,33 +1,44 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 export default function AllCourses() {
   const queryClient = useQueryClient();
+  const axiosSecure = useAxiosSecure();
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const { data: courses = [], isLoading } = useQuery({
-    queryKey: ["courses"],
+  const { data: coursesData = [], isLoading } = useQuery({
+    queryKey: ["courses", { page: currentPage }],
     queryFn: async () => {
       const res = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/courses/all`
+        `${import.meta.env.VITE_BASE_URL}/courses/all`,
+        {
+          params: { page: currentPage, limit: 6 },
+        }
       );
-      return res.data.courses;
+      console.log(res.data);
+
+      return res.data;
     },
   });
 
   const updateStatus = useMutation({
     mutationFn: async ({ id, status }) => {
-      return await axios.patch(
-        `${import.meta.env.VITE_BASE_URL}/courses/change-status/${id}`,
-        { status }
-      );
+      await axiosSecure.patch(`/courses/change-status/${id}`, {
+        status,
+      });
     },
     onSuccess: () => {
       toast.success("Status updated");
       queryClient.invalidateQueries(["courses"]);
     },
-    onError: () => toast.error("Failed to update status"),
+    onError: (error) => {
+      toast.error("Failed to update status");
+      console.log(error);
+    },
   });
 
   const handleStatusChange = (id, status) => {
@@ -41,6 +52,22 @@ export default function AllCourses() {
         updateStatus.mutate({ id, status });
       }
     });
+  };
+
+  const handleNextPage = () => {
+    if (coursesData.hasNextPage) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    } else {
+      toast.error("No more pages available");
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prevPage) => prevPage - 1);
+    } else {
+      toast.error("You are already on the first page");
+    }
   };
 
   return (
@@ -63,7 +90,7 @@ export default function AllCourses() {
               </tr>
             </thead>
             <tbody>
-              {courses.map((course) => (
+              {coursesData.courses.map((course) => (
                 <tr key={course._id}>
                   <td>
                     <img
@@ -121,6 +148,15 @@ export default function AllCourses() {
               ))}
             </tbody>
           </table>
+          <div className="join mt-10 flex justify-center">
+            <button onClick={handlePrevPage} className="join-item btn text-lg">
+              «
+            </button>
+            <button className="join-item btn">Page {currentPage}</button>
+            <button onClick={handleNextPage} className="join-item btn text-lg">
+              »
+            </button>
+          </div>
         </div>
       )}
     </div>

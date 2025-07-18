@@ -1,29 +1,29 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 export default function AllUsers() {
   const [search, setSearch] = useState("");
   const queryClient = useQueryClient();
+  const axiosSecure = useAxiosSecure();
+  const [page, setPage] = useState(1);
 
-  const { data: users = [], isLoading } = useQuery({
-    queryKey: ["users", search],
+  const { data = {}, isLoading } = useQuery({
+    queryKey: ["users", { page, search }],
     queryFn: async () => {
-      const res = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/users?search=${search}`
-      );
+      const res = await axiosSecure.get(`/users?search=${search}&page=${page}`);
+      console.log(res.data);
 
-      return res.data.users;
+      return res.data;
     },
+    onError: () => console.error("Failed to fetch users"),
   });
 
   const makeAdmin = useMutation({
     mutationFn: async (id) => {
-      return await axios.patch(
-        `${import.meta.env.VITE_BASE_URL}/users/admin/${id}`
-      );
+      return await axiosSecure.patch(`/users/admin/${id}`);
     },
     onSuccess: () => {
       toast.success("User promoted to admin");
@@ -50,6 +50,22 @@ export default function AllUsers() {
         makeAdmin.mutate(id);
       }
     });
+  };
+
+  const handleNextPage = () => {
+    if (data.hasNextPage) {
+      setPage((prevPage) => prevPage + 1);
+    } else {
+      toast.error("No more pages available");
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (page > 1) {
+      setPage((prevPage) => prevPage - 1);
+    } else {
+      toast.error("You are already on the first page");
+    }
   };
 
   return (
@@ -85,7 +101,7 @@ export default function AllUsers() {
               </tr>
             </thead>
             <tbody>
-              {users.map((user) => (
+              {data.users.map((user) => (
                 <tr key={user._id}>
                   <td>
                     <img
@@ -125,6 +141,27 @@ export default function AllUsers() {
               ))}
             </tbody>
           </table>
+
+          {/* Pagination Controls */}
+          <div className="mt-4 flex justify-center gap-4">
+            <button
+              disabled={page === 1}
+              onClick={handlePrevPage}
+              className="btn btn-primary"
+            >
+              Previous
+            </button>
+            <div className="px-4 py-1 border border-gray-300 rounded">
+              Page: {page}
+            </div>
+            <button
+              disabled={!data.hasNextPage}
+              onClick={handleNextPage}
+              className="btn btn-primary"
+            >
+              Next
+            </button>
+          </div>
         </div>
       )}
     </div>

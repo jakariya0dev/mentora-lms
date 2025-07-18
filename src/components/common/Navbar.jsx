@@ -45,7 +45,7 @@ export default function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50 bg-base-100 shadow-lg">
-      <div className="navbar max-w-7xl mx-auto">
+      <div className="navbar  mx-auto">
         <div className="navbar-start">
           <div className="dropdown">
             <div

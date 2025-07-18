@@ -1,5 +1,4 @@
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { useForm } from "react-hook-form";
 import { FaLock, FaUser } from "react-icons/fa";
 import { Link, Navigate, useLocation, useNavigate } from "react-router";
@@ -7,6 +6,7 @@ import { toast } from "react-toastify";
 import GoogleLogo from "../assets/icons/google.svg";
 import LoaderDotted from "../components/common/LoaderDotted";
 import useAuth from "../hooks/useAuth";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const errorMap = {
   "auth/invalid-email": "Invalid email address.",
@@ -20,6 +20,7 @@ export default function Login() {
     useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const axiosSecure = useAxiosSecure();
 
   const {
     register,
@@ -51,18 +52,16 @@ export default function Login() {
   const googleLoginMutation = useMutation({
     mutationFn: async () => {
       const userCredential = await loginWithGoogle();
+      setUser(userCredential.user);
       return userCredential.user;
     },
     onSuccess: async (user) => {
       // Save user in database on MongoDB
-      await axios.post(`${import.meta.env.VITE_BASE_URL}/users`, {
+      await axiosSecure.post(`/users`, {
         name: user.displayName,
         email: user.email,
         photoURL: user.photoURL,
-        role: "student",
       });
-
-      setUser(user);
       toast.success("Login successful!");
       if (location.state?.from) {
         navigate(location.state.from);

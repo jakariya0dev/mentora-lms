@@ -1,10 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import StarRatings from "react-star-ratings";
 import { toast } from "react-toastify";
 import useAuth from "../../hooks/useAuth";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 export default function GiveFeedbackModal({
   setIsModalOpen,
@@ -16,22 +16,22 @@ export default function GiveFeedbackModal({
   const { register, handleSubmit, reset } = useForm();
   const [rating, setRating] = useState(existingFeedbacks[0]?.rating || 3);
   const modalRef = useRef(null);
+  const axiosSecure = useAxiosSecure();
 
-  console.log(existingFeedbacks);
+  // console.log(existingFeedbacks);
 
   // feedback submit mutation
   const addFeedbackMutation = useMutation({
     mutationFn: (data) => {
-      return axios.post(`${import.meta.env.VITE_BASE_URL}/feedbacks`, data);
+      return axiosSecure.post(`/feedbacks`, data);
     },
     onSuccess: () => {
+      resetTheModal();
       toast.success("Feedback submitted successfully.");
       queryClient.invalidateQueries(["feedbacks", courseId]);
-      reset();
-      setRating(3);
-      setIsModalOpen(false);
     },
     onError: (error) => {
+      resetTheModal();
       toast.error("Failed to submit feedback.");
       console.error(error);
     },
@@ -40,18 +40,16 @@ export default function GiveFeedbackModal({
   // update feedback mutation
   const updateFeedbackMutation = useMutation({
     mutationFn: (data) => {
-      return axios.patch(
-        `${import.meta.env.VITE_BASE_URL}/feedbacks/${
-          existingFeedbacks[0]?._id
-        }`,
-        data
-      );
+      return axiosSecure.patch(`/feedbacks/${existingFeedbacks[0]?._id}`, data);
+      // console.log(data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["feedbacks", courseId]);
+      resetTheModal();
       toast.success("Feedback updated successfully.");
     },
     onError: (error) => {
+      resetTheModal();
       toast.error("Failed to update feedback.");
       console.error(error);
     },
@@ -64,7 +62,14 @@ export default function GiveFeedbackModal({
 
   const onUpdate = (data) => {
     const feedback = { ...data, rating };
+    console.log(data, feedback);
     updateFeedbackMutation.mutate(feedback);
+  };
+
+  const resetTheModal = () => {
+    reset();
+    setRating(3);
+    setIsModalOpen(false);
   };
 
   //   if (isLoading) return <div>Loading...</div>;

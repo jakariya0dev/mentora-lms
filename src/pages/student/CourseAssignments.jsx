@@ -6,6 +6,7 @@ import AssignmentModal from "../../components/common/AssignmentModal";
 import GiveFeedbackModal from "../../components/common/GiveFeedbackModal";
 import LoaderDotted from "../../components/common/LoaderDotted";
 import useAuth from "../../hooks/useAuth";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const CourseAssignments = () => {
   const { courseId } = useParams();
@@ -14,6 +15,7 @@ const CourseAssignments = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAssignmentModalOpen, setIsAssignmentModalOpen] = useState(false);
   const [selectedAssignmentId, setSelectedAssignmentId] = useState(null);
+  const axiosSecure = useAxiosSecure();
 
   // Fetching assignments for the course
   const {
@@ -23,10 +25,10 @@ const CourseAssignments = () => {
   } = useQuery({
     queryKey: ["assignments", courseId],
     queryFn: async () => {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/assignments/${courseId}/${user.email}`
+      const { data } = await axiosSecure.get(
+        `/assignments/${courseId}/${user.email}`
       );
-      console.log("Assignments fetched:", data.assignments);
+      // console.log("Assignments fetched:", data.assignments);
       return data.assignments;
     },
     enabled: !!courseId,
@@ -39,7 +41,7 @@ const CourseAssignments = () => {
       const { data } = await axios.get(
         `${import.meta.env.VITE_BASE_URL}/courses/${courseId}`
       );
-      console.log("Course info fetched:", data.course);
+      // console.log("Course info fetched:", data.course);
 
       return data.course;
     },
@@ -55,7 +57,7 @@ const CourseAssignments = () => {
           import.meta.env.VITE_BASE_URL
         }/feedbacks?courseId=${courseId}&studentEmail=${user.email}`
       );
-      console.log("Feedbacks fetched:", response.data?.feedbacks);
+      // console.log("Feedbacks fetched:", response.data?.feedbacks);
 
       return response.data.feedbacks;
     },
@@ -66,14 +68,6 @@ const CourseAssignments = () => {
   });
 
   const onSubmit = (assignmentId) => {
-    // const payload = {
-    //   assignmentId: data.assignmentId,
-    //   courseId,
-    //   studentEmail: user.email,
-    //   submissionLink: data.submissionLink,
-    //   submittedAt: new Date().toISOString(),
-    // };
-
     setSelectedAssignmentId(assignmentId);
     setIsAssignmentModalOpen(true);
   };

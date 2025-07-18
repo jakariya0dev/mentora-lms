@@ -3,29 +3,40 @@ import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router";
+import { toast } from "react-toastify";
 import LoaderDotted from "../../components/common/LoaderDotted";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const CourseSummery = () => {
   const { courseId } = useParams();
   const [modalOpen, setModalOpen] = useState(false);
   const queryClient = useQueryClient();
   const { register, handleSubmit, reset } = useForm();
+  const axiosSecure = useAxiosSecure();
+
+  // ------------------- Fetching course info ------------------- //
+
+  const { data: courseInfo = {} } = useQuery({
+    queryKey: ["courseInfo", courseId],
+    queryFn: async () => {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/courses/${courseId}`
+      );
+
+      // console.log("Course info fetched:", data.course);
+
+      return data.course;
+    },
+    enabled: !!courseId,
+  });
 
   // ------------------ FETCH CLASS STATS ------------------ //
   const { data: courseStats, isLoading } = useQuery({
     queryKey: ["courseStats", courseId],
     queryFn: async () => {
-      const submissions = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/submissions/${courseId}`
-      );
-
-      const enrollments = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/enrollments/${courseId}`
-      );
-
-      const assignments = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/assignments/${courseId}`
-      );
+      const submissions = await axiosSecure.get(`/submissions/${courseId}`);
+      const enrollments = await axiosSecure.get(`/enrollments/${courseId}`);
+      const assignments = await axiosSecure.get(`/assignments/${courseId}`);
 
       const result = {
         submissions: submissions.data.submissions,
@@ -44,16 +55,20 @@ const CourseSummery = () => {
   // ------------------ CREATE ASSIGNMENT ------------------ //
   const addAssignmentMutation = useMutation({
     mutationFn: async (newAssignment) => {
-      const res = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/assignments`,
-        newAssignment
-      );
+      const res = await axiosSecure.post(`/assignments`, newAssignment);
       return res.data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["courseStats", courseId]);
+      toast.success("Assignment added successfully.");
       setModalOpen(false);
       reset();
+    },
+    onError: (error) => {
+      toast.error("Failed to add assignment.");
+      setModalOpen(false);
+      reset();
+      console.error(error);
     },
   });
 
@@ -70,7 +85,9 @@ const CourseSummery = () => {
 
   return (
     <div className="p-6 flex-1 mx-auto">
-      <h2 className="text-2xl font-semibold mb-4">Class Progress</h2>
+      <h2 className="text-2xl font-semibold mb-4">
+        Class Progress <span className="text-lg">({courseInfo.title})</span>
+      </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <Card
