@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import statsImage from "../../assets/images/banner.jpg";
+import statsImage from "../../assets/images/stats.jpg";
 
 export default function PlatformStats() {
   const { data: statistics = [] } = useQuery({
@@ -15,7 +15,7 @@ export default function PlatformStats() {
   });
   return (
     <section className="py-16 md:py-32 bg-white">
-      <div className="max-w-7xl mx-auto px-6 md:px-10 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
         {/* Left Side - Cards */}
         <div className="flex flex-col justify-center">
           <h2 className="text-4xl font-bold text-gray-600 mb-2">

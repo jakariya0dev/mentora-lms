@@ -1,6 +1,6 @@
 import { FaChalkboardTeacher, FaGlobe, FaMoneyBillWave } from "react-icons/fa";
 import { Link } from "react-router";
-import teacherImg from "../../assets/images/banner.jpg";
+import teacherImg from "../../assets/images/teacher.jpg";
 
 export default function JoinAsTeacher() {
   return (

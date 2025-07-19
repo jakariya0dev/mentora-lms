@@ -16,7 +16,7 @@ export default function AllCourses() {
       const res = await axios.get(
         `${import.meta.env.VITE_BASE_URL}/courses/all`,
         {
-          params: { page: currentPage, limit: 6 },
+          params: { page: currentPage, limit: 10 },
         }
       );
       console.log(res.data);
@@ -152,12 +152,23 @@ export default function AllCourses() {
               ))}
             </tbody>
           </table>
+          {/* Pagination */}
           <div className="join mt-10 flex justify-center">
-            <button onClick={handlePrevPage} className="join-item btn text-lg">
+            <button
+              disabled={currentPage === 1}
+              onClick={handlePrevPage}
+              className="join-item btn text-lg"
+            >
               «
             </button>
-            <button className="join-item btn">Page {currentPage}</button>
-            <button onClick={handleNextPage} className="join-item btn text-lg">
+            <button className="join-item btn">
+              Page {currentPage} of {coursesData.totalPages}
+            </button>
+            <button
+              disabled={!coursesData.hasNextPage}
+              onClick={handleNextPage}
+              className="join-item btn text-lg"
+            >
               »
             </button>
           </div>

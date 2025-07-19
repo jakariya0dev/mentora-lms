@@ -2,6 +2,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
+import renderStars from "../../utils/renderStarts";
 
 const CourseDetails = () => {
   const { id } = useParams();
@@ -60,7 +61,8 @@ const CourseDetails = () => {
               <strong>Price:</strong> ${course.price}
             </p>
             <p>
-              <strong>Rating:</strong> {course.rating} ⭐
+              <strong>Rating:</strong> {course.rating}{" "}
+              {renderStars(course.rating)}
             </p>
             <button
               onClick={handlePay}

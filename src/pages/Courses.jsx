@@ -2,13 +2,12 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router";
-import { toast } from "react-toastify";
 import LoaderDotted from "../components/common/LoaderDotted";
 
 const fetchCourses = async ({ queryKey }) => {
   const [, { page, searchTerm }] = queryKey;
   const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/courses`, {
-    params: { page, limit: 6, searchTerm },
+    params: { page, limit: 9, searchTerm },
   });
   return res.data;
 };
@@ -28,21 +27,17 @@ const AllCourses = () => {
     refetch();
   };
 
-  // console.log(data);
+  console.log(data);
 
   const handleNextPage = () => {
     if (data.hasNextPage) {
       setCurrentPage((prevPage) => prevPage + 1);
-    } else {
-      toast.error("No more pages available");
     }
   };
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
       setCurrentPage((prevPage) => prevPage - 1);
-    } else {
-      toast.error("You are already on the first page");
     }
   };
 
@@ -134,11 +129,21 @@ const AllCourses = () => {
           )}
         </div>
         <div className="join mt-10 flex justify-center">
-          <button onClick={handlePrevPage} className="join-item btn text-lg">
+          <button
+            disabled={currentPage === 1}
+            onClick={handlePrevPage}
+            className="join-item btn text-lg"
+          >
             «
           </button>
-          <button className="join-item btn">Page {currentPage}</button>
-          <button onClick={handleNextPage} className="join-item btn text-lg">
+          <button className="join-item btn">
+            Page {currentPage} of {data.totalPages}
+          </button>
+          <button
+            disabled={!data.hasNextPage}
+            onClick={handleNextPage}
+            className="join-item btn text-lg"
+          >
             »
           </button>
         </div>

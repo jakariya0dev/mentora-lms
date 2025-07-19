@@ -6,7 +6,7 @@ export default function Banner() {
       style={{
         backgroundImage: `url(${bannerImg})`,
         backgroundSize: "cover",
-        backgroundPosition: "center top",
+        backgroundPosition: "center center",
         backgroundRepeat: "no-repeat",
       }}
       className="hero min-h-[80vh] bg-base-200"

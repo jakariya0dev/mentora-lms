@@ -42,11 +42,11 @@ export default function TrustedClients() {
           We are Trusted by industry leaders around the world
         </p>
 
-        <div className="flex flex-wrap justify-center gap-5 items-center text-6xl text-gray-600">
+        <div className="flex flex-wrap justify-center gap-5 items-center text-6xl text-gray-700">
           {partners.map((partner, index) => (
             <div
               key={index}
-              className="hover:text-gray-800 transition-colors duration-300 bg-amber-100 rounded-lg p-6 shadow flex-1"
+              className="hover:bg-amber-100 transition-all duration-500 bg-gray-100 rounded p-6 flex-1"
             >
               <div className="flex items-center justify-center gap-2">
                 <partner.icon className="w-8 h-8 md:w-12 md:h-12" />

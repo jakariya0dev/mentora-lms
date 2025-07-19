@@ -1,10 +1,8 @@
 import { Link } from "react-router";
+import renderStars from "../../utils/renderStarts";
 
 export default function CourseCard({ course, index }) {
-  const renderStars = (rating) => {
-    const stars = Math.round(rating);
-    return "★".repeat(stars) + "☆".repeat(5 - stars);
-  };
+
 
   return (
     <div
