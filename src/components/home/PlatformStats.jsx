@@ -1,31 +1,53 @@
-import statsImage from "../../assets/images/banner.jpg"; // replace with your relevant image path
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import statsImage from "../../assets/images/banner.jpg";
 
 export default function PlatformStats() {
+  const { data: statistics = [] } = useQuery({
+    useKey: ["statistics"],
+    queryFn: async () => {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/statistics`
+      );
+
+      return response.data.data;
+    },
+  });
   return (
     <section className="py-16 md:py-32 bg-white">
       <div className="max-w-7xl mx-auto px-6 md:px-10 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
         {/* Left Side - Cards */}
         <div>
           <h2 className="text-4xl font-bold text-gray-600 mb-2">
-            Unlock Your Potential with <span className="text-indigo-600">Mentora</span>
+            Unlock Your Potential with{" "}
+            <span className="text-indigo-600">Mentora</span>
           </h2>
           <p className="text-gray-600 mb-6">
-            AI powered learning platform for tech, design, freelancing, and more.
+            AI powered learning platform for tech, design, freelancing, and
+            more.
           </p>
           <div className="flex justify-between">
             <div className="flex flex-col">
-              <h3 className="text-4xl font-bold text-gray-600">12,450+</h3>
-              <p className="font-semibold text-gray-500">Total Users</p>
+              <h3 className="text-6xl font-bold text-gray-600">
+                {statistics?.totalUsers}+
+              </h3>
+              <p className="font-semibold text-gray-500 text-lg">Total Users</p>
             </div>
             <div className="w-0.5 h-16 bg-gray-300"></div>
             <div className="flex flex-col">
-              <h3 className="text-4xl font-bold text-gray-600">321+</h3>
-              <p className="font-semibold text-gray-500">Courses</p>
+              <h3 className="text-6xl font-bold text-gray-600">
+                {statistics?.totalCourses}+
+              </h3>
+              <p className="font-semibold text-gray-500 text-lg">Courses</p>
             </div>
             <div className="w-0.5 h-16 bg-gray-300"></div>
             <div className="flex flex-col">
-              <h3 className="text-4xl font-bold text-gray-600">55,000+</h3>
-              <p className="font-semibold text-gray-500">Total Enrollments</p>
+              <h3 className="text-6xl font-bold text-gray-600">
+                {statistics?.totalEnrollments}+
+              </h3>
+              <p className="font-semibold text-gray-500 text-lg">
+                Total Enrollments
+              </p>
             </div>
           </div>
         </div>
