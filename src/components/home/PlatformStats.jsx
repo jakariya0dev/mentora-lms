@@ -4,7 +4,7 @@ import statsImage from "../../assets/images/stats.jpg";
 
 export default function PlatformStats() {
   const { data: statistics = [] } = useQuery({
-    useKey: ["statistics"],
+    queryKey: ["statistics"],
     queryFn: async () => {
       const response = await axios.get(
         `${import.meta.env.VITE_BASE_URL}/statistics`

@@ -19,7 +19,7 @@ export default function AllCourses() {
           params: { page: currentPage, limit: 10 },
         }
       );
-      console.log(res.data);
+      // console.log(res.data);
 
       return res.data;
     },

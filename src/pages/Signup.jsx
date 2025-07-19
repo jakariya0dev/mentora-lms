@@ -34,18 +34,16 @@ export default function Signup() {
       const userCredential = await userSignup(data.email, data.password); // Create user on firebase
       await updateUserProfile(userCredential.user, data.name, data.photoURL); // Update user profile on firebase
       await userCredential.user.reload(); // Reload user to get updated profile
-      return { firebaseUser: userCredential.user, formData: data };
+      return userCredential.user;
     },
-    onSuccess: async ({ firebaseUser, formData }) => {
+    onSuccess: async (user) => {
       // Save user in database on MongoDB
+      // server will set default role student
       await axiosSecure.post(`/users`, {
-        name: formData.name,
-        email: firebaseUser.email,
-        photoURL: formData.photoURL,
-        role: "student",
+        email: user.email,
       });
 
-      setUser(firebaseUser);
+      setUser(user);
       reset();
       toast.success("Signup successful!");
       if (location.state?.from) {
@@ -66,8 +64,6 @@ export default function Signup() {
   };
 
   if (isUserLoading) return <LoaderDotted />;
-
-  // if (user) return <Navigate to="/" replace />;
 
   return (
     <>

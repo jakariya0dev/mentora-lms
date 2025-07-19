@@ -59,9 +59,7 @@ export default function Login() {
     onSuccess: async (user) => {
       // Save user in database on MongoDB
       await axiosSecure.post(`/users`, {
-        name: user.displayName,
         email: user.email,
-        photoURL: user.photoURL,
       });
       toast.success("Login successful!");
       if (location.state?.from) {

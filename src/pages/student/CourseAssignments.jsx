@@ -101,7 +101,7 @@ const CourseAssignments = () => {
         <p>No assignments available.</p>
       ) : (
         <div className="overflow-x-auto">
-          <table className="min-w-full border border-gray-200 rounded border-gray-300 min-w-[1000px]">
+          <table className="border border-gray-200 rounded min-w-[1000px]">
             <thead className="bg-gray-100 text-left">
               <tr>
                 <th className="px-4 py-2 border border-gray-200">Title</th>

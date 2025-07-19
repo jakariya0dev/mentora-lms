@@ -28,7 +28,7 @@ export default function Feedback() {
       const response = await axios.get(
         `${import.meta.env.VITE_BASE_URL}/feedbacks`
       );
-      console.log("Feedbacks fetched:", response.data?.feedbacks);
+      // console.log("Feedbacks fetched:", response.data?.feedbacks);
 
       return response.data.feedbacks;
     },

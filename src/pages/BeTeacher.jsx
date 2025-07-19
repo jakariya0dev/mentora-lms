@@ -1,11 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import { FaInfoCircle } from "react-icons/fa";
 import Swal from "sweetalert2";
 import HeadTag from "../components/common/HeadTag";
 import LoaderDotted from "../components/common/LoaderDotted";
 import useAuth from "../hooks/useAuth";
+import NoticeBoard from "./common/NoticeBoard";
 
 const BeTeacher = () => {
   const { user } = useAuth();
@@ -23,6 +23,12 @@ const BeTeacher = () => {
         title: "Your request has been sent",
         text: "Please wait for approval. Thank you!",
         icon: "success",
+        showConfirmButton: true,
+        confirmButtonText: "OK",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
       });
     },
     onError: (error) => {
@@ -65,26 +71,17 @@ const BeTeacher = () => {
 
           {/* Already Teacher */}
           {user?.status === "approved" && (
-            <h2 className="flex items-center gap-4 text-2xl font-semibold mb-8 text-center text-red-500 bg-amber-200 p-4">
-              <FaInfoCircle className="text-amber-500" /> You are already a
-              teacher
-            </h2>
+            <NoticeBoard title="You are already a teacher" />
           )}
 
           {/* Teacher Request Pending */}
           {user?.status === "pending" && (
-            <h2 className="flex items-center gap-4 text-2xl font-semibold mb-8 text-center text-red-500">
-              <FaInfoCircle className="text-amber-500" /> Your request is
-              pending
-            </h2>
+            <NoticeBoard title="Your request is pending" />
           )}
 
           {/* Teacher Request Rejected */}
           {user?.status === "rejected" && (
-            <h2 className="flex items-center gap-4 text-2xl font-semibold mb-8 text-center text-red-500">
-              <FaInfoCircle className="text-amber-500" />: Your request was
-              rejected
-            </h2>
+            <NoticeBoard title="Your request has been rejected" />
           )}
 
           {/* Name (read-only) */}

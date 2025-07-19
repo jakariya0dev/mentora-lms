@@ -14,7 +14,7 @@ export default function AllUsers() {
     queryKey: ["users", { page, search }],
     queryFn: async () => {
       const res = await axiosSecure.get(`/users?search=${search}&page=${page}`);
-      console.log(res.data);
+      // console.log(res.data);
 
       return res.data;
     },
@@ -152,7 +152,7 @@ export default function AllUsers() {
               Previous
             </button>
             <div className="px-4 py-1 border border-gray-300 rounded">
-              Page: {page}
+              Page: {page} of {data.totalPages}
             </div>
             <button
               disabled={!data.hasNextPage}
@@ -162,7 +162,6 @@ export default function AllUsers() {
               Next
             </button>
           </div>
-          
         </div>
       )}
     </div>

@@ -15,6 +15,14 @@ const PendingTeachers = () => {
     queryFn: () => fetchTeachers(page),
   });
 
+  const fetchTeachers = async (page = 1, limit = 10) => {
+    const { data } = await axiosSecure.get(
+      `/teachers?page=${page}&limit=${limit}`
+    );
+    // console.log(data);
+    return data;
+  };
+
   const statusMutation = useMutation({
     mutationFn: async ({ id, status }) => {
       return await axiosSecure.patch(`/change-teacher-status/${id}`, {
@@ -30,14 +38,6 @@ const PendingTeachers = () => {
     },
   });
 
-  const fetchTeachers = async (page = 1, limit = 10) => {
-    const { data } = await axiosSecure.get(
-      `/teachers?page=${page}&limit=${limit}`
-    );
-    // console.log(data);
-    return data;
-  };
-
   const handleStatusChange = (id, status) => {
     Swal.fire({
       title: `Are you sure to ${status}?`,
@@ -50,19 +50,6 @@ const PendingTeachers = () => {
       }
     });
   };
-
-  if (isLoading) return <LoaderSpinner />;
-
-  if (data?.teachers?.length === 0) {
-    return (
-      <div className="p-10">
-        <h2 className="text-2xl font-semibold mb-4">
-          Pending Teacher Requests
-        </h2>
-        <p className="text-xl">No pending teacher requests found.</p>
-      </div>
-    );
-  }
 
   const handleNextPage = () => {
     if (data.hasNextPage) {
@@ -79,6 +66,8 @@ const PendingTeachers = () => {
       toast.error("You are already on the first page");
     }
   };
+
+  if (isLoading) return <LoaderSpinner />;
 
   if (data?.teachers?.length === 0) {
     return (

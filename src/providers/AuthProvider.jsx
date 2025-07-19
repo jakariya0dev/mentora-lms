@@ -10,7 +10,7 @@ import {
 import { createContext, useEffect, useState } from "react";
 import { auth, provider } from "../../firebase.config";
 
-const AuthContext = createContext();
+const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
   const [isUserLoading, setIsUserLoading] = useState(true);
@@ -23,7 +23,7 @@ const AuthProvider = ({ children }) => {
           const dbUser = await fetchMongoUser(currentUser.email);
           setUser({ ...currentUser, ...dbUser });
         } catch (error) {
-          console.error("Mongo user fetch failed:", error);
+          console.error("Failed to fetch Mongo user:", error);
           setUser(currentUser);
         } finally {
           setIsUserLoading(false);
@@ -40,6 +40,7 @@ const AuthProvider = ({ children }) => {
     const res = await axios.get(
       `${import.meta.env.VITE_BASE_URL}/users/${email}`
     );
+
     return res.data;
   };
 
