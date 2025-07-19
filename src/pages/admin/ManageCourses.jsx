@@ -70,6 +70,10 @@ export default function AllCourses() {
     }
   };
 
+  if (coursesData.length === 0) {
+    return <div className="text-center py-10">No courses found</div>;
+  }
+
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">All Courses</h2>
@@ -78,7 +82,7 @@ export default function AllCourses() {
         <p className="text-center py-10">Loading courses...</p>
       ) : (
         <div className="overflow-x-auto">
-          <table className="table table-zebra w-full">
+          <table className="table table-zebra w-full border-gray-300 min-w-[1000px]">
             <thead>
               <tr>
                 <th>Image</th>

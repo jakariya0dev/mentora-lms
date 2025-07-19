@@ -80,11 +80,20 @@ const PendingTeachers = () => {
     }
   };
 
+  if (data?.teachers?.length === 0) {
+    return (
+      <div className="p-10">
+        <h2 className="text-2xl font-semibold mb-4">All Teachers</h2>
+        <p className="text-xl">No teacher found.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="p-4">
       <h2 className="text-2xl font-semibold mb-4">Pending Teacher Requests</h2>
       <div className="overflow-x-auto">
-        <table className="table-auto w-full border border-gray-300">
+        <table className="table-auto w-full border border-gray-300 min-w-[1000px]">
           <thead className="bg-gray-200 ">
             <tr className="text-left">
               <th className="py-2 text-center">Image</th>

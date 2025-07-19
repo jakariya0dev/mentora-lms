@@ -19,27 +19,87 @@ export default function Navbar() {
     },
   });
 
-  const activeNavLinkStyle = ({ isActive }) =>
+  const linkStyle = ({ isActive }) =>
     isActive ? "text-primary font-semibold" : "font-semibold";
 
   const links = (
     <>
       <li>
-        <NavLink to="/" className={activeNavLinkStyle}>
+        <NavLink to="/" className={linkStyle}>
           Home
         </NavLink>
       </li>
       <li>
-        <NavLink to="/courses" className={activeNavLinkStyle}>
+        <NavLink to="/courses" className={linkStyle}>
           All Courses
         </NavLink>
       </li>
 
       <li>
-        <NavLink to="/become-teacher" className={activeNavLinkStyle}>
+        <NavLink to="/become-teacher" className={linkStyle}>
           Teach on Mentora
         </NavLink>
       </li>
+
+      {/* Dashboard links only visible on mobile */}
+
+      <hr className="md:hidden my-2 border-gray-400" />
+
+      {user?.role === "admin" && (
+        <li className="md:hidden">
+          <NavLink to="/dashboard/teachers" className={linkStyle}>
+            All Teachers
+          </NavLink>
+        </li>
+      )}
+
+      {user?.role === "admin" && (
+        <li className="md:hidden">
+          <NavLink to="/dashboard/users" className={linkStyle}>
+            All Users
+          </NavLink>
+        </li>
+      )}
+
+      {user?.role === "admin" && (
+        <li className="md:hidden">
+          <NavLink to="/dashboard/courses" className={linkStyle}>
+            All Courses
+          </NavLink>
+        </li>
+      )}
+
+      {user?.role === "student" && (
+        <li className="md:hidden">
+          <NavLink to="/dashboard/courses" className={linkStyle}>
+            Enrolled Courses
+          </NavLink>
+        </li>
+      )}
+
+      {user?.role === "teacher" && (
+        <li className="md:hidden">
+          <NavLink to="/dashboard/courses" className={linkStyle}>
+            My Courses
+          </NavLink>
+        </li>
+      )}
+
+      {user?.role === "teacher" && (
+        <li className="md:hidden">
+          <NavLink to="/dashboard/courses/add" className={linkStyle}>
+            Add Course
+          </NavLink>
+        </li>
+      )}
+
+      {user && (
+        <li className="md:hidden">
+          <NavLink to="/dashboard/profile" className={linkStyle}>
+            My Profile
+          </NavLink>
+        </li>
+      )}
     </>
   );
 
@@ -105,7 +165,7 @@ const UserData = ({ user, isUserLoading, logoutMutation }) => {
 
         <ul
           tabIndex={1}
-          className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+          className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow right-0"
         >
           <li>
             <p className="font-semibold text-center">{user?.displayName}</p>

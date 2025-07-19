@@ -33,7 +33,7 @@ const partners = [
 
 export default function TrustedClients() {
   return (
-    <section className="py-16 md:py-32 overflow-hidden">
+    <section className="px-6 md:px-0 py-16 md:py-32 overflow-hidden">
       <div className="max-w-7xl mx-auto text-center">
         <h2 className="text-3xl md:text-4xl font-bold mb-3 text-gray-800">
           Our Partner <span className="text-indigo-600">Companies</span>
@@ -42,11 +42,11 @@ export default function TrustedClients() {
           We are Trusted by industry leaders around the world
         </p>
 
-        <div className="flex flex-wrap justify-center gap-10 items-center text-6xl text-gray-600">
+        <div className="flex flex-wrap justify-center gap-5 items-center text-6xl text-gray-600">
           {partners.map((partner, index) => (
             <div
               key={index}
-              className="hover:text-gray-800 transition-colors duration-300 bg-amber-100 rounded-lg p-6 shadow"
+              className="hover:text-gray-800 transition-colors duration-300 bg-amber-100 rounded-lg p-6 shadow flex-1"
             >
               <div className="flex items-center justify-center gap-2">
                 <partner.icon className="w-8 h-8 md:w-12 md:h-12" />

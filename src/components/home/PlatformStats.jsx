@@ -17,12 +17,12 @@ export default function PlatformStats() {
     <section className="py-16 md:py-32 bg-white">
       <div className="max-w-7xl mx-auto px-6 md:px-10 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
         {/* Left Side - Cards */}
-        <div>
+        <div className="flex flex-col justify-center">
           <h2 className="text-4xl font-bold text-gray-600 mb-2">
             Unlock Your Potential with{" "}
             <span className="text-indigo-600">Mentora</span>
           </h2>
-          <p className="text-gray-600 mb-6">
+          <p className="text-gray-600 mb-10">
             AI powered learning platform for tech, design, freelancing, and
             more.
           </p>

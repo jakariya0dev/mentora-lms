@@ -14,7 +14,7 @@ export default function DashboardSidebar() {
     isActive ? "text-yellow-300" : "hover:text-yellow-200";
 
   return (
-    <div className="w-3/12 bg-gray-800 text-white p-10 space-y-4">
+    <div className="w-3/12 bg-gray-800 text-white p-10 space-y-4 hidden md:block">
       <h2 className="text-2xl font-semibold mb-4">Dashboard</h2>
       <nav className="flex flex-col space-y-2">
         {user?.role === "admin" && (

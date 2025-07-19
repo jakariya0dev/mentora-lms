@@ -7,8 +7,8 @@ export default function UserProfile() {
   if (!user) return <p>Loading...</p>;
 
   return (
-    <div className="h-full p-10">
-      <div className="flex flex-col items-center gap-4 p-6 max-w-2xl mx-auto">
+    <div className="h-full py-4 px-2 md:p-10">
+      <div className="flex flex-col items-center gap-4 w-full md:max-w-2xl mx-auto">
         <img
           src={user.photoURL || user.image || "/default-avatar.png"}
           alt="Profile"

@@ -90,7 +90,7 @@ export default function AllUsers() {
         <p className="text-center my-10">Loading users...</p>
       ) : (
         <div className="overflow-x-auto">
-          <table className="table w-full">
+          <table className="table w-full border-gray-300 min-w-[1000px]">
             <thead>
               <tr>
                 <th>Image</th>
