@@ -33,13 +33,13 @@ export default function CourseCard({ course, index }) {
           <p className="text-sm text-gray-500 mb-1">
             Category: <span className="font-medium">{course.category}</span>
           </p>
-          <div className="flex justify-between items-center mt-4">
-            <p className="text-base font-bold text-indigo-600">
+          <div className="flex justify-between items-center mt-8">
+            <p className="text-xl font-semibold text-gray-600">
               Price: ${Number(course.price).toFixed(2)}
             </p>
             <Link
               to={`/courses/${course._id}`}
-              className="mt-4 bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
+              className=" bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
             >
               Enroll Now
             </Link>

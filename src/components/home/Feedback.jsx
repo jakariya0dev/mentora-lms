@@ -42,8 +42,8 @@ export default function Feedback() {
 
         <Slider {...settings}>
           {feedbacks.map((feedback, index) => (
-            <div key={index} className="px-4">
-              <div className="bg-white rounded-lg shadow-md p-6 h-full flex flex-col">
+            <div key={index} className="px-4 h-[100%]">
+              <div className="bg-white rounded-lg shadow-md p-6 flex flex-col mb-2">
                 <div className="flex items-center gap-5">
                   <img
                     src={feedback.userInfo.photoURL || "/default-avatar.png"}

@@ -59,7 +59,7 @@ export default function NewCourses() {
   };
 
   return (
-    <section className="py-16 md:py-32 bg-white relative">
+    <section className="pb-16 pt-8 md:pb-32 md:pt-16 bg-white relative">
       <div className="max-w-7xl mx-auto px-4">
         <h2 className="text-3xl font-bold text-gray-600 mb-10">
           Recently Added Courses

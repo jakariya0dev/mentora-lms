@@ -104,8 +104,8 @@ export default function Navbar() {
   );
 
   return (
-    <nav className="sticky top-0 z-50 bg-base-100 shadow-lg">
-      <div className="navbar  mx-auto">
+    <nav className="sticky top-0 z-50 bg-base-100 shadow-lg px-4">
+      <div className="navbar">
         <div className="navbar-start">
           <div className="dropdown">
             <div
@@ -117,7 +117,7 @@ export default function Navbar() {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 w-52 p-2 shadow"
             >
               {links}
             </ul>
@@ -159,7 +159,7 @@ const UserData = ({ user, isUserLoading, logoutMutation }) => {
           <img
             src={user.photoURL}
             alt=""
-            className="w-10 h-10 rounded-full mr-4 ring-2 hover:ring-3 hover:ring-amber-500 transition-all duration-300"
+            className="w-10 h-10 rounded-full ring-2 hover:ring-3 hover:ring-amber-500 transition-all duration-300"
           />
         </div>
 

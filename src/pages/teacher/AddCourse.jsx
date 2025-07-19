@@ -44,6 +44,7 @@ export default function AddCourse() {
     const imageFile = data.image[0];
     const imageUrl = await uploadImageMutation.mutateAsync(imageFile);
     data.image = imageUrl;
+    data.rating = Math.floor(Math.random() * 5) + 1;
     saveCourseMutation.mutate(data);
   };
 

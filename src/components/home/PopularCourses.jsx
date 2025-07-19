@@ -60,7 +60,7 @@ export default function PopularCourses() {
   };
 
   return (
-    <section className="py-16 md:py-32 bg-white relative">
+    <section className="pt-16 pb-8 md:pt-32 md:pb-16 bg-white relative">
       <div className="max-w-7xl mx-auto px-4">
         <h2 className="text-3xl font-bold text-gray-600 mb-10">
           Popular Courses
