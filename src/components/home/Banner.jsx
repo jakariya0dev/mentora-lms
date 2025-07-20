@@ -11,7 +11,7 @@ export default function Banner() {
       }}
       className="hero min-h-[80vh] bg-base-200"
     >
-      <div className="bg-gradient-to-r from-black/90 via-black/50 to-transparent h-full w-full p-5 md:p-10">
+      <div className="bg-gradient-to-r from-black/90 via-black/60 to-transparent h-full w-full p-5 md:p-10">
         <div className="max-w-7xl mx-auto text-white flex items-center h-full">
           <div className="max-w-2xl">
             <h1 className="mb-5 text-6xl leading-tight font-bold">

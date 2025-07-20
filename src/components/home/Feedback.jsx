@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Slider from "react-slick";
+import ContentNotFound from "../common/ContentNotFound";
 
 const settings = {
   dots: true,
@@ -33,6 +34,10 @@ export default function Feedback() {
       return response.data.feedbacks;
     },
   });
+
+  if (feedbacks.length === 0)
+    return <ContentNotFound title="No Feedbacks Found" />;
+
   return (
     <section className="px-6 p-0 py-16 md:py-32 bg-gray-100">
       <div className="max-w-7xl mx-auto">
@@ -52,7 +57,7 @@ export default function Feedback() {
                   />
                   <div>
                     <h3 className="text-xl font-semibold text-gray-800">
-                      {feedback.userInfo.name}
+                      {feedback.userInfo.displayName || "N/A"}
                     </h3>
                     <p className="text-sm text-gray-400 mb-2">
                       Course:{" "}

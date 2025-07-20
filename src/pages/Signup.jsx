@@ -41,9 +41,11 @@ export default function Signup() {
       // server will set default role student
       await axiosSecure.post(`/users`, {
         email: user.email,
+        photoURL: user.photoURL,
+        displayName: user.displayName,
       });
 
-      setUser(user);
+      setUser({ ...user, role: "student" });
       reset();
       toast.success("Signup successful!");
       if (location.state?.from) {

@@ -29,21 +29,21 @@ export default function PlatformStats() {
           <div className="flex justify-between">
             <div className="flex flex-col">
               <h3 className="text-4xl md:text-6xl font-bold text-gray-600">
-                {statistics?.totalUsers}+
+                {statistics?.totalUsers || 0}+
               </h3>
               <p className="font-semibold text-gray-500 text-lg">Total Users</p>
             </div>
             <div className="w-0.5 h-16 bg-gray-300"></div>
             <div className="flex flex-col">
               <h3 className="text-4xl md:text-6xl font-bold text-gray-600">
-                {statistics?.totalCourses}+
+                {statistics?.totalCourses || 0}+
               </h3>
               <p className="font-semibold text-gray-500 text-lg">Courses</p>
             </div>
             <div className="w-0.5 h-16 bg-gray-300"></div>
             <div className="flex flex-col">
               <h3 className="text-4xl md:text-6xl font-bold text-gray-600">
-                {statistics?.totalEnrollments}+
+                {statistics?.totalEnrollments || 0}+
               </h3>
               <p className="font-semibold text-gray-500 text-lg">
                 Total Enrollments

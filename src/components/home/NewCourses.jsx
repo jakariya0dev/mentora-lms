@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import Slider from "react-slick";
+import ContentNotFound from "../common/ContentNotFound";
 import CourseCard from "../common/CourseCard";
 
 // Custom Arrows
@@ -57,6 +58,9 @@ export default function NewCourses() {
       },
     ],
   };
+
+  if (NewCourses.length === 0)
+    return <ContentNotFound title="No Recent Courses available" />;
 
   return (
     <section className="pb-16 pt-8 md:pb-32 md:pt-16 bg-white relative">

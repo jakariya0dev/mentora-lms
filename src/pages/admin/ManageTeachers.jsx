@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import ContentNotFound from "../../components/common/ContentNotFound";
 import LoaderSpinner from "../../components/common/LoaderSpinner";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
@@ -57,25 +58,19 @@ const PendingTeachers = () => {
   const handleNextPage = () => {
     if (data.hasNextPage) {
       setPage((prevPage) => prevPage + 1);
-    } 
+    }
   };
 
   const handlePrevPage = () => {
     if (page > 1) {
       setPage((prevPage) => prevPage - 1);
-    } 
+    }
   };
 
   if (isLoading) return <LoaderSpinner />;
 
-  if (data?.teachers?.length === 0) {
-    return (
-      <div className="p-10">
-        <h2 className="text-2xl font-semibold mb-4">All Teachers</h2>
-        <p className="text-xl">No teacher found.</p>
-      </div>
-    );
-  }
+  if (data?.teachers?.length === 0)
+    return <ContentNotFound title="No Teachers Found" />;
 
   return (
     <div className="p-4">

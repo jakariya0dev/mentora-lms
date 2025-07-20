@@ -1,18 +1,19 @@
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import HeadTag from "../components/common/HeadTag";
 import LoaderDotted from "../components/common/LoaderDotted";
 import useAuth from "../hooks/useAuth";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 import NoticeBoard from "./common/NoticeBoard";
 
 const BeTeacher = () => {
   const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
 
   const becomeTeacherMutation = useMutation({
     mutationFn: async (data) => {
-      const result = await axios.post(
+      const result = await axiosSecure.post(
         `${import.meta.env.VITE_BASE_URL}/be-teacher/${user.email}`,
         data
       );

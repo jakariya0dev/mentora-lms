@@ -48,7 +48,9 @@ export default function EnrolledCouses() {
           </h2>
           <p className="text-gray-600 mb-4">
             Created By:{" "}
-            <span className="font-semibold">{course.instructor[0]?.name}</span>
+            <span className="font-semibold">
+              {course.instructor[0]?.displayName}
+            </span>
           </p>
           <Link
             to={`/dashboard/assignments/${course.courseInfo._id}`}

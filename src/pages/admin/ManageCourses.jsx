@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import ContentNotFound from "../../components/common/ContentNotFound";
 import LoaderSpinner from "../../components/common/LoaderSpinner";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
@@ -76,9 +77,8 @@ export default function AllCourses() {
 
   if (isLoading) return <LoaderSpinner />;
 
-  if (coursesData.length === 0) {
-    return <div className="text-center py-10">No courses found</div>;
-  }
+  if (coursesData.courses.length === 0)
+    return <ContentNotFound title="No Courses Found" />;
 
   return (
     <div className="p-4">
@@ -125,7 +125,7 @@ export default function AllCourses() {
                 <td>
                   <Link
                     to={`/dashboard/courses/${course._id}`}
-                    disabled={course.status === "approved"}
+                    disabled={course.status === "pending"}
                     className="btn btn-sm btn-secondary"
                   >
                     Progress

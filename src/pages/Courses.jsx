@@ -2,8 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router";
+import ContentNotFound from "../components/common/ContentNotFound";
 import HeadTag from "../components/common/HeadTag";
 import LoaderDotted from "../components/common/LoaderDotted";
+import renderStars from "../utils/renderStarts";
 
 const fetchCourses = async ({ queryKey }) => {
   const [, { page, searchTerm }] = queryKey;
@@ -42,19 +44,7 @@ const AllCourses = () => {
     }
   };
 
-  const renderStars = (rating) => {
-    const stars = Math.round(rating);
-    return "★".repeat(stars) + "☆".repeat(5 - stars);
-  };
-
   if (isLoading) return <LoaderDotted />;
-
-  if (data.length === 0)
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <p className="text-2xl font-bold">No courses found</p>
-      </div>
-    );
 
   return (
     <>
@@ -81,12 +71,12 @@ const AllCourses = () => {
 
         {/* Courses List */}
 
-        <div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {data.length === 0 ? (
-              <p className="text-center text-gray-500">No courses found</p>
-            ) : (
-              data.courses.map((course) => (
+        {data.courses.length === 0 ? (
+          <ContentNotFound title="No Courses Found" />
+        ) : (
+          <div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+              {data.courses.map((course) => (
                 <div
                   key={course._id}
                   className="border border-gray-200 p-4 rounded-xl shadow hover:shadow-lg"
@@ -100,7 +90,7 @@ const AllCourses = () => {
                   <p className=" text-gray-600 mb-1">
                     Created by{" "}
                     <span className="font-semibold">
-                      {course.instructor[0]?.name || "N/A"}{" "}
+                      {course.instructor[0]?.displayName || "N/A"}{" "}
                       <span className="text-sm text-yellow-500 mb-1">
                         {renderStars(course.rating)} (
                         {course.rating?.toFixed(1)})
@@ -111,10 +101,12 @@ const AllCourses = () => {
                   <p className="text-gray-600">
                     Enrolled Students:{" "}
                     <span className="font-semibold text-blue-600">
-                      {course.totalEnrollments.toString().padStart(2, 0)}
+                      {course.totalEnrollments == 0
+                        ? "No Enrollments"
+                        : course.totalEnrollments.toString().padStart(2, 0)}
                     </span>{" "}
                   </p>
-                  <p className="text-gray-600 mt-3">
+                  <p className="text-gray-400 mt-3">
                     {course.description?.slice(0, 100) + " ..."}
                   </p>
                   <div className="mt-5 flex justify-between items-center">
@@ -129,29 +121,29 @@ const AllCourses = () => {
                     </Link>
                   </div>
                 </div>
-              ))
-            )}
+              ))}
+            </div>
+            <div className="join mt-10 flex justify-center">
+              <button
+                disabled={currentPage === 1}
+                onClick={handlePrevPage}
+                className="join-item btn text-lg"
+              >
+                «
+              </button>
+              <button className="join-item btn">
+                Page {currentPage} of {data.totalPages}
+              </button>
+              <button
+                disabled={!data.hasNextPage}
+                onClick={handleNextPage}
+                className="join-item btn text-lg"
+              >
+                »
+              </button>
+            </div>
           </div>
-          <div className="join mt-10 flex justify-center">
-            <button
-              disabled={currentPage === 1}
-              onClick={handlePrevPage}
-              className="join-item btn text-lg"
-            >
-              «
-            </button>
-            <button className="join-item btn">
-              Page {currentPage} of {data.totalPages}
-            </button>
-            <button
-              disabled={!data.hasNextPage}
-              onClick={handleNextPage}
-              className="join-item btn text-lg"
-            >
-              »
-            </button>
-          </div>
-        </div>
+        )}
       </div>
     </>
   );

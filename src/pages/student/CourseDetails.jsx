@@ -15,6 +15,8 @@ const CourseDetails = () => {
       const response = await axios.get(
         `${import.meta.env.VITE_BASE_URL}/courses/${id}`
       );
+      console.log("Course info fetched:", response.data.course);
+
       return response.data.course;
     },
   });
@@ -33,7 +35,7 @@ const CourseDetails = () => {
         <img
           src={course.image}
           alt={course.title}
-          className="w-full h-120 object-cover shadow-lg rounded mb-10"
+          className="w-full h-120 object-cover shadow-lg rounded mb-16"
         />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 ">
           <div className="space-y-4">
@@ -43,7 +45,7 @@ const CourseDetails = () => {
 
           <div className="space-y-4">
             <p>
-              <strong>Created By:</strong> {course.instructor[0]?.name}
+              <strong>Created By:</strong> {course.instructor?.displayName}
             </p>
             <p>
               <strong>Total Enrolled:</strong>{" "}
@@ -55,7 +57,9 @@ const CourseDetails = () => {
             </p>
             <p>
               <strong>Rating:</strong> {course.rating}{" "}
-              {renderStars(course.rating)}
+              <span className="text-green-500">
+                {renderStars(course.rating)}
+              </span>
             </p>
             <button
               onClick={handlePay}

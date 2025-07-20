@@ -2,8 +2,6 @@ import { Link } from "react-router";
 import renderStars from "../../utils/renderStarts";
 
 export default function CourseCard({ course, index }) {
-
-
   return (
     <div
       key={index}
@@ -20,18 +18,24 @@ export default function CourseCard({ course, index }) {
             {course.title}
           </h3>
           <p className="text-sm text-gray-600 mb-1">
-            Created By {course.instructor[0]?.name}{" "}
+            Created By{" "}
+            <span className="font-medium">
+              {course.instructor[0]?.displayName}
+            </span>{" "}
             <span className="text-sm text-yellow-500 mb-1">
               {renderStars(course.rating)} ({course.rating?.toFixed(1)})
             </span>
           </p>
           <p className="text-indigo-600 font-medium mb-1">
-            Enrolled Students:{" "}
-            {course.totalEnrollments?.toString().padStart(2, 0)}
+            Total {course.totalEnrollments?.toString().padStart(2, 0)} Students
+            Enrolled
           </p>
 
           <p className="text-sm text-gray-500 mb-1">
-            Category: <span className="font-medium">{course.category}</span>
+            Category:{" "}
+            <span className="font-medium">
+              {course.instructor[0]?.category}
+            </span>
           </p>
           <div className="flex justify-between items-center mt-8">
             <p className="text-xl font-semibold text-gray-600">

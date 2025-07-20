@@ -1,20 +1,33 @@
 // CallToAction.jsx
 import { Link } from "react-router";
+import bgImage from "../../assets/images/c2a.jpg";
 
 export default function CallToAction() {
   return (
-    <section className="bg-indigo-600 py-32 text-white text-center px-6">
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold mb-4">
-          Ready to start your learning journey?
+    <section
+      className="relative bg-cover bg-center py-32 px-6 text-white text-center"
+      style={{
+        backgroundImage: `url(${bgImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/80 to-black/70"></div>
+
+      {/* Content */}
+      <div className="relative z-10 max-w-4xl mx-auto">
+        <h2 className="text-4xl md:text-5xl font-extrabold leading-tight mb-4 drop-shadow-md">
+          Ready to Transform Your Learning?
         </h2>
-        <p className="mb-6 text-lg">
-          Join thousands of learners upgrading their skills with Mentora. Start
-          today — it's free to explore!
+
+        <p className="mb-8 text-lg md:text-xl text-gray-200 drop-shadow-sm">
+          Join thousands leveling up their careers with Mentora — start for free
+          and explore the future of learning.
         </p>
         <Link
           to="/courses"
-          className="bg-white text-indigo-600 font-semibold px-6 py-3 rounded-md hover:bg-gray-100 transition"
+          className="inline-block bg-white text-indigo-700 font-semibold px-8 py-3 rounded-lg shadow-lg hover:bg-gray-200 transition duration-300"
         >
           Browse Courses
         </Link>

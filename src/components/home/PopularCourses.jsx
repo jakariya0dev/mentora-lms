@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import Slider from "react-slick";
+import ContentNotFound from "../common/ContentNotFound";
 import CourseCard from "../common/CourseCard";
 
 // Custom Arrows
@@ -58,6 +59,8 @@ export default function PopularCourses() {
       },
     ],
   };
+
+  if (courses.length === 0) return <ContentNotFound title="No Popular Courses available" />;
 
   return (
     <section className="pt-16 pb-8 md:pt-32 md:pb-16 bg-white relative">
