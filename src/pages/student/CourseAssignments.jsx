@@ -31,7 +31,7 @@ const CourseAssignments = () => {
       // console.log("Assignments fetched:", data.assignments);
       return data.assignments;
     },
-    enabled: !!courseId,
+    enabled: user.accessToken !== null,
   });
 
   // Fetching course info

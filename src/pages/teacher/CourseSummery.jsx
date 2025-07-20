@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { useParams } from "react-router";
 import { toast } from "react-toastify";
 import LoaderDotted from "../../components/common/LoaderDotted";
+import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const CourseSummery = () => {
@@ -13,6 +14,7 @@ const CourseSummery = () => {
   const queryClient = useQueryClient();
   const { register, handleSubmit, reset } = useForm();
   const axiosSecure = useAxiosSecure();
+  const { user } = useAuth();
 
   // ------------------- Fetching course info ------------------- //
 
@@ -22,12 +24,9 @@ const CourseSummery = () => {
       const { data } = await axios.get(
         `${import.meta.env.VITE_BASE_URL}/courses/${courseId}`
       );
-
       // console.log("Course info fetched:", data.course);
-
       return data.course;
     },
-    enabled: !!courseId,
   });
 
   // ------------------ FETCH CLASS STATS ------------------ //
@@ -49,7 +48,7 @@ const CourseSummery = () => {
     onError: (error) => {
       console.error("Error fetching course stats:", error);
     },
-    enabled: !!courseId,
+    enabled: user.accessToken !== null,
   });
 
   // ------------------ CREATE ASSIGNMENT ------------------ //
@@ -104,11 +103,16 @@ const CourseSummery = () => {
         />
       </div>
 
-      <div className="text-right">
-        <button onClick={() => setModalOpen(true)} className="btn btn-success">
-          Create Assignment
-        </button>
-      </div>
+      {user.role === "teacher" && (
+        <div className="text-right">
+          <button
+            onClick={() => setModalOpen(true)}
+            className="btn btn-success"
+          >
+            Create Assignment
+          </button>
+        </div>
+      )}
 
       {/* MODAL */}
       {modalOpen && (

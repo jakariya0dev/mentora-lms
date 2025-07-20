@@ -2,6 +2,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import LoaderSpinner from "../../components/common/LoaderSpinner";
+import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 export default function AllUsers() {
@@ -9,16 +11,17 @@ export default function AllUsers() {
   const queryClient = useQueryClient();
   const axiosSecure = useAxiosSecure();
   const [page, setPage] = useState(1);
+  const { user } = useAuth();
 
   const { data = {}, isLoading } = useQuery({
     queryKey: ["users", { page, search }],
     queryFn: async () => {
       const res = await axiosSecure.get(`/users?search=${search}&page=${page}`);
       // console.log(res.data);
-
       return res.data;
     },
     onError: () => console.error("Failed to fetch users"),
+    enabled: user.accessToken !== null,
   });
 
   const makeAdmin = useMutation({
@@ -67,6 +70,11 @@ export default function AllUsers() {
       toast.error("You are already on the first page");
     }
   };
+
+  if (isLoading) return <LoaderSpinner />;
+
+  if (data.users.length === 0)
+    return <p className="text-center my-10">No users found</p>;
 
   return (
     <div className="p-5">

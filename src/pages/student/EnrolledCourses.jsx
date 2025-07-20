@@ -15,10 +15,10 @@ export default function EnrolledCouses() {
         `/courses/enrolled/${user?.email}`
       );
 
-      console.log(response.data);
+      // console.log(response.data);
       return response.data.enrolledCourses;
     },
-    enabled: !!user?.email,
+    enabled: user.accessToken !== null,
   });
 
   if (isLoading) return <LoaderDotted />;

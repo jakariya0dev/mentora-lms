@@ -15,10 +15,12 @@ const AuthContext = createContext(null);
 const AuthProvider = ({ children }) => {
   const [isUserLoading, setIsUserLoading] = useState(true);
   const [user, setUser] = useState(null);
+  const [firebaseUser, setFirebaseUser] = useState(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
+        setFirebaseUser(currentUser);
         try {
           const dbUser = await fetchMongoUser(currentUser.email);
           setUser({ ...currentUser, ...dbUser });
@@ -70,6 +72,7 @@ const AuthProvider = ({ children }) => {
   const authInfo = {
     user,
     setUser,
+    firebaseUser,
     isUserLoading,
     userSignup,
     userLogin,

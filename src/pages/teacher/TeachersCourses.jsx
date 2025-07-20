@@ -24,6 +24,7 @@ export default function TeachersCourses() {
       );
       return res.data;
     },
+    enabled: user.accessToken !== null,
   });
 
   const deleteMutation = useMutation({

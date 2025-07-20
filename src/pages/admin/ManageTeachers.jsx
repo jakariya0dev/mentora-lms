@@ -3,16 +3,19 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import LoaderSpinner from "../../components/common/LoaderSpinner";
+import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const PendingTeachers = () => {
   const [page, setPage] = useState(1);
   const queryClient = useQueryClient();
   const axiosSecure = useAxiosSecure();
+  const { user } = useAuth();
 
   const { data, isLoading } = useQuery({
-    queryKey: ["pendingTeachers", page],
+    queryKey: ["teachersData", page],
     queryFn: () => fetchTeachers(page),
+    enabled: user.accessToken !== null,
   });
 
   const fetchTeachers = async (page = 1, limit = 10) => {
@@ -30,7 +33,7 @@ const PendingTeachers = () => {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["pendingTeachers"]);
+      queryClient.invalidateQueries(["teachersData"]);
       toast.success("Status updated successfully!");
     },
     onError: () => {
@@ -54,17 +57,13 @@ const PendingTeachers = () => {
   const handleNextPage = () => {
     if (data.hasNextPage) {
       setPage((prevPage) => prevPage + 1);
-    } else {
-      toast.error("No more pages available");
-    }
+    } 
   };
 
   const handlePrevPage = () => {
     if (page > 1) {
       setPage((prevPage) => prevPage - 1);
-    } else {
-      toast.error("You are already on the first page");
-    }
+    } 
   };
 
   if (isLoading) return <LoaderSpinner />;

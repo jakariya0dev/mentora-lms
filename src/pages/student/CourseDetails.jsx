@@ -1,38 +1,31 @@
 // pages/CourseDetails.jsx
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
+import LoaderSpinner from "../../components/common/LoaderSpinner";
 import renderStars from "../../utils/renderStarts";
 
 const CourseDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [course, setCourse] = useState(null);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchCourse = async () => {
-      try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/courses/${id}`
-        );
-        setCourse(res.data.course);
-      } catch (err) {
-        console.error("Error loading course:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCourse();
-  }, [id]);
+  const { data: course = [], isLoading } = useQuery({
+    queryKey: ["course", id],
+    queryFn: async () => {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/courses/${id}`
+      );
+      return response.data.course;
+    },
+  });
 
   const handlePay = () => {
     navigate(`/payment/${id}`);
   };
 
-  if (loading) return <div className="text-center py-10">Loading...</div>;
-  if (!course) return <div className="text-center py-10">Course not found</div>;
+  if (isLoading) return <LoaderSpinner />;
+  if (course.length === 0)
+    return <div className="text-center py-10">Course not found</div>;
 
   return (
     <div className="max-w-7xl mx-auto py-10">

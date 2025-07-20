@@ -112,7 +112,7 @@ const router = createBrowserRouter([
           {
             path: "courses/:courseId",
             element: (
-              <RoleBasedRoute allowedRoles={["teacher"]}>
+              <RoleBasedRoute allowedRoles={["teacher", "admin"]}>
                 <CourseSummery />
               </RoleBasedRoute>
             ),
