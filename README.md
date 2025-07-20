@@ -6,12 +6,12 @@ Welcome to **Mentora**, a full-featured Learning Management System designed to s
 
 ## 🚀 Live Website
 
-🌐 **Live URL:** [https://Mentora-lms.web.app](https://Mentora-lms.web.app)
+🌐 **Live URL:** [https://mentora-lms.web.app](https://mentora-lms.web.app)
 
 > ⚠️ For demo purposes, use the following admin credentials:
 
 - 🧑‍💼 **Admin Email:** `admin@mail.com`
-- 🔐 **Password:** `123456`
+- 🔐 **Password:** `000000`
 
 ---
 
