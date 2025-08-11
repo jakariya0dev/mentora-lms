@@ -6,7 +6,11 @@ Welcome to **Mentora**, a full-featured Learning Management System designed to s
 
 ## 🚀 Live Website
 
-🌐 **Live URL:** [https://mentora-lms.netlify.app](https://mentora-lms.netlify.app)
+🌐 **Live URL:** [https://mentora-lms.netlify.app](https://mentora-lms.netlify.app) <br>
+🌐 **Server Repo:** [https://github.com/jakariya0dev/mentora-lms-server](https://github.com/jakariya0dev/mentora-lms-server)
+
+
+
 
 > ⚠️ For demo purposes, use the following admin credentials:
 
