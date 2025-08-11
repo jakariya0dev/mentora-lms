@@ -60,13 +60,14 @@ export default function PopularCourses() {
     ],
   };
 
-  if (courses.length === 0) return <ContentNotFound title="No Popular Courses available" />;
+  if (courses.length === 0)
+    return <ContentNotFound title="No Popular Courses available" />;
 
   return (
     <section className="pt-16 pb-8 md:pt-32 md:pb-16 bg-white relative">
       <div className="max-w-7xl mx-auto px-4">
         <h2 className="text-3xl font-bold text-gray-600 mb-10">
-          Popular Courses
+          Most Popular Courses
         </h2>
 
         <Slider {...settings}>

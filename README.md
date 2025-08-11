@@ -70,6 +70,15 @@ Welcome to **Mentora**, a full-featured Learning Management System designed to s
 
 ---
 
+## 🌐 Installation
+
+1. Clone the repository: `git clone https://github.com/jhalhadi/mentora.git`
+2. Navigate to the project directory: `cd mentora`
+3. Install dependencies: `npm install`
+4. Start the development server: `npm run dev`
+
+---
+
 ## 🧑‍💼 Author
 
 **👨‍💻 Jakariya H.**  

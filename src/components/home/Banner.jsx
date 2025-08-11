@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import bannerImg from "../../assets/images/banner.jpg";
 
 export default function Banner() {
@@ -53,7 +54,9 @@ export default function Banner() {
                 <p className="text-lg font-semibold">Happy Students</p>
               </div>
 
-              <button className="btn btn-primary">Explore Courses</button>
+              <Link to="/courses" className="btn btn-primary">
+                Explore Courses
+              </Link>
             </div>
           </div>
         </div>
