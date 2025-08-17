@@ -8,6 +8,7 @@ import CourseDash from "../pages/common/CourseDash";
 import DashBoard from "../pages/common/Dashboard";
 import Profile from "../pages/common/Profile";
 import Courses from "../pages/Courses";
+import FAQ from "../pages/Faq";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import NotFound from "../pages/NotFound";
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: "/about",
         element: <About />,
+      },
+      {
+        path: "/faq",
+        element: <FAQ />,
       },
       {
         path: "/courses",
