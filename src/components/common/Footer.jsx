@@ -1,4 +1,4 @@
-import { FaFacebookF, FaTwitter, FaLinkedinIn, FaGithub } from "react-icons/fa";
+import { FaFacebookF, FaGithub, FaLinkedinIn, FaTwitter } from "react-icons/fa";
 
 export default function Footer() {
   return (
@@ -34,7 +34,7 @@ export default function Footer() {
               </a>
             </li>
             <li>
-              <a href="/contact" className="hover:text-white">
+              <a href="/about" className="hover:text-white">
                 Contact
               </a>
             </li>
@@ -106,7 +106,6 @@ export default function Footer() {
             </a>
           </div>
         </div>
-      
       </div>
 
       <div className="mt-10 border-t border-gray-700 pt-6 text-center text-gray-400 text-sm">

@@ -71,17 +71,17 @@ const BeTeacher = () => {
           </div>
 
           {/* Already Teacher */}
-          {user?.status === "approved" && (
+          {user?.status === "approved" && user?.role === "teacher" && (
             <NoticeBoard title="You are already a teacher" />
           )}
 
           {/* Teacher Request Pending */}
-          {user?.status === "pending" && (
+          {user?.status === "pending" && user?.role === "teacher" && (
             <NoticeBoard title="Your request is pending" />
           )}
 
           {/* Teacher Request Rejected */}
-          {user?.status === "rejected" && (
+          {user?.status === "rejected" && user?.role === "teacher" && (
             <NoticeBoard title="Your request has been rejected" />
           )}
 
