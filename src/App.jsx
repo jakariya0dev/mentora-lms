@@ -4,8 +4,8 @@ import "react-toastify/dist/ReactToastify.css";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import Footer from "./components/common/Footer";
+import GoToTopButton from "./components/common/GoToTopButton";
 import Navbar from "./components/common/Navbar";
-
 import { AuthProvider } from "./providers/AuthProvider";
 
 function App() {
@@ -15,6 +15,7 @@ function App() {
       <Outlet />
       <Footer />
       <ToastContainer position="top-right" autoClose={3000} />
+      <GoToTopButton />
     </AuthProvider>
   );
 }
