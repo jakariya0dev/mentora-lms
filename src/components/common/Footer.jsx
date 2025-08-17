@@ -46,22 +46,22 @@ export default function Footer() {
           <h2 className="text-xl font-semibold mb-4">Top Categories</h2>
           <ul className="space-y-2 text-sm text-gray-300">
             <li>
-              <a href="/category/web-development" className="hover:text-white">
+              <a href="/category/courses" className="hover:text-white">
                 Web Development
               </a>
             </li>
             <li>
-              <a href="/category/graphic-design" className="hover:text-white">
+              <a href="/category/courses" className="hover:text-white">
                 Graphic Design
               </a>
             </li>
             <li>
-              <a href="/category/freelancing" className="hover:text-white">
+              <a href="/category/courses" className="hover:text-white">
                 Freelancing Skills
               </a>
             </li>
             <li>
-              <a href="/category/ui-ux" className="hover:text-white">
+              <a href="/category/courses" className="hover:text-white">
                 UI/UX Design
               </a>
             </li>
